@@ -49,18 +49,6 @@ Sistema de gestão fiscal desenvolvido com Django para controle e administraçã
 
 6. **Acesse:** http://127.0.0.1:8000/
 
-## 📁 Estrutura do Projeto
-
-```
-gestao_fiscal/
-├── accounts/          # App de contas e autenticação
-├── core/             # App principal
-├── gestao_fiscal/    # Configurações do projeto
-├── static/           # Arquivos estáticos (CSS, JS)
-├── templates/        # Templates HTML
-└── requirements.txt  # Dependências Python
-```
-
 ## 🛠️ Tecnologias Utilizadas
 
 - **Backend:** Django 5.2.6
