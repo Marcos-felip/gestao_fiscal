@@ -1,10 +1,47 @@
-{% load crispy_forms_tags %}
+{% load static %}
 <form class="card card-md" action="{% url 'account_signup' %}" method="post" autocomplete="off" novalidate>
 	{% csrf_token %}
 	<div class="card-body">
-		<h2 class="card-title text-center mb-4">Criar nova conta</h2>
-		{{ form|crispy }}
-        <div class="form-footer">
+		<h2 class="h2 text-center mb-4">Criar nova conta</h2>
+
+		{% for field in form %}
+			{% if field.name == 'agree' %}
+				<div class="mb-3">
+					<label class="form-check">
+						<input type="checkbox" class="form-check-input" name="{{ field.name }}" id="{{ field.id_for_label }}">
+						<span class="form-check-label">Concordo com os <a href="#" tabindex="-1">termos e a política</a>.</span>
+					</label>
+				</div>
+			{% else %}
+				<div class="mb-3">
+					<label class="form-label">{{ field.label }}</label>
+					{% if field.name == 'password1' or field.name == 'password2' %}
+						<div class="input-group input-group-flat">
+							<input type="password" class="form-control" placeholder="{% if field.name == 'password1' %}Sua senha{% else %}Confirme sua senha{% endif %}" name="{{ field.name }}" autocomplete="{% if field.name == 'password1' %}new-password{% else %}new-password{% endif %}" id="password-{{ field.name }}">
+							<span class="input-group-text">
+								<a href="#" class="link-secondary" title="Mostrar senha" data-bs-toggle="tooltip" data-password-field="password-{{ field.name }}">
+									<i class="ti ti-eye ti" style="font-size: 1.2rem;"></i>
+								</a>
+							</span>
+						</div>
+					{% else %}
+						<input type="{% if field.name == 'email' %}email{% else %}text{% endif %}" class="form-control" placeholder="{% if field.name == 'name' %}Digite seu nome{% elif field.name == 'email' %}Digite seu e-mail{% endif %}" name="{{ field.name }}" autocomplete="{% if field.name == 'email' %}username{% else %}given-name{% endif %}">
+					{% endif %}
+					{% if field.errors %}
+						<div class="invalid-feedback d-block">
+							{{ field.errors.0 }}
+						</div>
+					{% endif %}
+					{% if field.name == 'email' %}
+						<div class="form-hint">
+							Insira um endereço de e-mail válido
+						</div>
+					{% endif %}
+				</div>
+			{% endif %}
+		{% endfor %}
+
+		<div class="form-footer">
 			<button type="submit" class="btn btn-primary w-100">Criar nova conta</button>
 		</div>
 	</div>
@@ -13,3 +50,19 @@
 <div class="text-center text-secondary mt-3">
 	Já tem conta? <a href="{% url 'account_login' %}" tabindex="-1">Faça login</a>
 </div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelectorAll('[data-password-field]').forEach(function(toggle) {
+			toggle.addEventListener('click', function(e) {
+				e.preventDefault();
+				const fieldId = this.getAttribute('data-password-field');
+				const passwordField = document.querySelector('#' + fieldId);
+				const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+				passwordField.setAttribute('type', type);
+				this.querySelector('i').classList.toggle('ti-eye');
+				this.querySelector('i').classList.toggle('ti-eye-off');
+			});
+		});
+	});
+</script>

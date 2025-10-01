@@ -1,9 +1,6 @@
 from allauth.account.forms import LoginForm, SignupForm
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Submit, Div, HTML
 from django import forms
 
-from accounts.models.company import Company
 from accounts.models.user import User
 
 
@@ -20,11 +17,16 @@ class CustomSignupForm(SignupForm):
 
     username = forms.EmailField(label='Email',required=True, help_text='Será necessário validar o e-mail para utilizar o sistema')
     full_name = forms.CharField(max_length=150,label='Nome Completo',required=True)
+    agree = forms.BooleanField(
+        required=True,
+        label='Concordo com os termos e a política',
+        help_text='Você deve concordar com os termos para continuar'
+    )
     field_order = [
         'full_name',
         'username',
         'password1',
-        'phone'
+        'agree'
     ]
 
     def __init__(self, *args, **kwargs):
@@ -34,27 +36,6 @@ class CustomSignupForm(SignupForm):
         self.fields['username'].label = 'Email'
         self.fields['password1'].help_text = None
         self.fields['password1'].widget.attrs.update({'placeholder': ''})
-
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.form_class = 'form'
-        self.helper.layout = Layout(
-            Field('full_name', placeholder='Seu nome completo', css_class='form-control'),
-            Field('username', placeholder='seu@email.com', css_class='form-control'),
-            Div(
-                Div(
-                    Field('password1', placeholder='Sua senha', css_class='form-control'),
-                    css_class='input-group input-group-flat'
-                ),
-                Div(
-                    HTML('<div class="form-hint">A senha deve ter pelo menos 8 caracteres</div>'),
-                    css_class='form-label'
-                ),
-                css_class='mb-2'
-            ),
-            Field('password2', placeholder='Confirme sua senha', css_class='form-control'),
-            Submit('submit', 'Cadastrar', css_class='btn btn-primary w-100')
-        )
 
     def clean(self):
         cleaned_data = super(CustomSignupForm, self).clean()
