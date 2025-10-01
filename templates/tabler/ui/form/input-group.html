@@ -1,0 +1,23 @@
+<div class="input-group{% if flat %} input-group-flat{% endif %}{% if class %} {{ class }}{% endif %}">
+    {% if prepend %}
+        <span class="input-group-text">{{ prepend }}</span>
+    {% endif %}
+    <input
+        type="{{ type|default:'text' }}"
+        class="form-control{% if input_class %} {{ input_class }}{% endif %}"
+        {% if placeholder %} placeholder="{{ placeholder }}" {% endif %}
+        {% if value %} value="{{ value }}"{% endif %}
+        autocomplete="off"
+        {% if id %} id="{{ id }}"{% endif %}
+    >
+    {% if append %}
+        <span class="input-group-text">{{ append }}</span>
+    {% endif %}
+    {% if append_button %}
+        <span class="input-group-text">
+            <a href="#" class="link-secondary" title="Toggle password visibility">
+                <i class="ti ti-eye"></i>
+            </a>
+        </span>
+    {% endif %}
+</div>

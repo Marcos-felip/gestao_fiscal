@@ -1,0 +1,28 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Gestão Fiscal{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'tabler/css/tabler.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
+    {% block extra_head %}
+    {% endblock %}
+</head>
+<body>
+    <main class="page page-center">
+        {% block content %}
+        <p>Conteúdo principal da página.</p>
+        {% endblock %}
+    </main>
+    {% comment %} 
+        <footer>
+            <p>&copy; 2025 Gestão Fiscal. Todos os direitos reservados.</p>
+        </footer> 
+    {% endcomment %}
+    {% block scripts %}{% endblock %}
+    <script src="{% static 'tabler/js/tabler.min.js' %}"></script>
+</body>
+</html>
