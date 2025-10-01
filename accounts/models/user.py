@@ -44,4 +44,4 @@ class Membership(CompanyBaseModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.user.username} @ {self.company.slug} ({self.role})"
+        return f"{self.user.username} @ {self.company.legal_name} ({self.role})"
