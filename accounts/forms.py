@@ -14,28 +14,6 @@ class CustomLoginForm(LoginForm):
         super(CustomLoginForm, self).__init__(*args, **kwargs)
         self.fields["password"].help_text = ""
 
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.form_class = 'form'
-        self.helper.layout = Layout(
-            Field('login', placeholder='seu@email.com', css_class='form-control'),
-            Div(
-                Div(
-                    Field('password', placeholder='Sua senha', css_class='form-control'),
-                    css_class='input-group input-group-flat'
-                ),
-                Div(
-                    HTML('<a href="{% url "account_reset_password" %}" class="form-label-description">Esqueci minha senha</a>'),
-                    css_class='form-label'
-                ),
-                css_class='mb-2'
-            ),
-            Div(
-                Field('remember', css_class='form-check-input'),
-                css_class='form-check mb-2'
-            ),
-        )
-
 
 class CustomSignupForm(SignupForm):
     """Formulário de cadastro customizado com allauth"""
@@ -53,6 +31,7 @@ class CustomSignupForm(SignupForm):
         super().__init__(*args, **kwargs)
 
         del self.fields['email']
+        self.fields['username'].label = 'Email'
         self.fields['password1'].help_text = None
         self.fields['password1'].widget.attrs.update({'placeholder': ''})
 
