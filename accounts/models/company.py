@@ -39,10 +39,10 @@ class Establishment(CompanyBaseModel):
         PRODUCTION = 'production', 'Production'
         HOMOLOGATION = 'homologation', 'Homologation'
 
-    cnpj = models.CharField(max_length=14, unique=True, verbose_name='CNPJ')
-    state_registration = models.CharField(max_length=20, blank=True, verbose_name='Inscrição Estadual')
-    municipal_registration = models.CharField(max_length=20, blank=True, verbose_name='Inscrição Municipal')
-    address = models.ForeignKey(Address, on_delete=models.PROTECT, related_name='establishments', verbose_name='Endereço')
+    cnpj = models.CharField(max_length=14, null=True, unique=True, verbose_name='CNPJ')
+    state_registration = models.CharField(max_length=20, null=True, blank=True, verbose_name='Inscrição Estadual')
+    municipal_registration = models.CharField(max_length=20, null=True, blank=True, verbose_name='Inscrição Municipal')
+    address = models.ForeignKey(Address, on_delete=models.PROTECT, null=True, related_name='establishments', verbose_name='Endereço')
     phone = models.CharField(max_length=15, verbose_name=u'Telefone', null=True, blank=True)
     is_matrix = models.BooleanField(default=False)
     environment_default = models.CharField(max_length=20, choices=Environment.choices, default=Environment.PRODUCTION, verbose_name='Ambiente Padrão')
