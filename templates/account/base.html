@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Gestão Fiscal{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'tabler/css/tabler.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tabler.min.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     {% block extra_head %}
     {% endblock %}
@@ -17,12 +17,12 @@
         <p>Conteúdo principal da página.</p>
         {% endblock %}
     </main>
-    {% comment %} 
+    {% comment %}
         <footer>
             <p>&copy; 2025 Gestão Fiscal. Todos os direitos reservados.</p>
-        </footer> 
+        </footer>
     {% endcomment %}
     {% block scripts %}{% endblock %}
-    <script src="{% static 'tabler/js/tabler.min.js' %}"></script>
+    <script src="{% static 'js/tabler.min.js' %}"></script>
 </body>
 </html>

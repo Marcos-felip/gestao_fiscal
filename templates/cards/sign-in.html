@@ -1,0 +1,20 @@
+<div class="card card-md">
+	<div class="card-body">
+		<h2 class="h2 text-center mb-4">Faça login na sua conta</h2>
+
+		{% include "forms/sign-in.html" %}
+	</div>
+
+	{% include "ui/hr.html" with text="ou" %}
+
+	<div class="card-body">
+		<div class="row">
+			<div class="col">{% include "ui/button.html" with block=True icon="brand-google" icon_color="google" text="Google" %}</div>
+			<div class="col">{% include "ui/button.html" with block=True icon="brand-facebook" icon_color="facebook" text="Facebook" %}</div>
+		</div>
+	</div>
+</div>
+
+<div class="text-center text-secondary mt-3">
+	Ainda não tem conta? <a href="{% url 'account_signup' %}" tabindex="-1">Cadastre-se</a>
+</div>
