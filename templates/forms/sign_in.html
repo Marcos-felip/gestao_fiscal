@@ -45,7 +45,7 @@
 	{% endfor %}
 
 	<div class="form-footer">
-		<button type="submit" class="btn btn-primary w-100">Entrar</button>
+		{% include "ui/button.html" with type="submit" block=True text="Entrar" color="primary" %}
 	</div>
 </form>
 
