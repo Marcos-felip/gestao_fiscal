@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     "debug_toolbar",
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -174,3 +176,5 @@ INTERNAL_IPS = [
     '127.0.0.1',
     'localhost',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
