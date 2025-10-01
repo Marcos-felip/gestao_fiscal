@@ -36,7 +36,7 @@ Sistema de gestão fiscal desenvolvido com Django para controle e administraçã
    ```
 
 4. **Configure o banco de dados:**
-   - Edite `gestao_fiscal/settings.py` com suas configurações de banco
+   - Edite `gestao_fiscal/local_settings.py` com suas configurações de banco
    - Execute as migrações:
    ```bash
    python manage.py migrate
