@@ -1,4 +1,6 @@
 from allauth.account.forms import LoginForm, SignupForm
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Field, Submit, Div, HTML
 from django import forms
 
 from accounts.models.company import Company
@@ -11,6 +13,28 @@ class CustomLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):
         super(CustomLoginForm, self).__init__(*args, **kwargs)
         self.fields["password"].help_text = ""
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_class = 'form'
+        self.helper.layout = Layout(
+            Field('login', placeholder='seu@email.com', css_class='form-control'),
+            Div(
+                Div(
+                    Field('password', placeholder='Sua senha', css_class='form-control'),
+                    css_class='input-group input-group-flat'
+                ),
+                Div(
+                    HTML('<a href="{% url "account_reset_password" %}" class="form-label-description">Esqueci minha senha</a>'),
+                    css_class='form-label'
+                ),
+                css_class='mb-2'
+            ),
+            Div(
+                Field('remember', css_class='form-check-input'),
+                css_class='form-check mb-2'
+            ),
+        )
 
 
 class CustomSignupForm(SignupForm):
@@ -31,6 +55,27 @@ class CustomSignupForm(SignupForm):
         del self.fields['email']
         self.fields['password1'].help_text = None
         self.fields['password1'].widget.attrs.update({'placeholder': ''})
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_class = 'form'
+        self.helper.layout = Layout(
+            Field('full_name', placeholder='Seu nome completo', css_class='form-control'),
+            Field('username', placeholder='seu@email.com', css_class='form-control'),
+            Div(
+                Div(
+                    Field('password1', placeholder='Sua senha', css_class='form-control'),
+                    css_class='input-group input-group-flat'
+                ),
+                Div(
+                    HTML('<div class="form-hint">A senha deve ter pelo menos 8 caracteres</div>'),
+                    css_class='form-label'
+                ),
+                css_class='mb-2'
+            ),
+            Field('password2', placeholder='Confirme sua senha', css_class='form-control'),
+            Submit('submit', 'Cadastrar', css_class='btn btn-primary w-100')
+        )
 
     def clean(self):
         cleaned_data = super(CustomSignupForm, self).clean()
