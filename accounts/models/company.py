@@ -15,7 +15,6 @@ class Company(models.Model):
 
     legal_name = models.CharField(max_length=255, verbose_name='Razão Social')
     trade_name = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nome Fantasia')
-    slug = models.SlugField(max_length=255, unique=True)
     key = models.CharField(max_length=50, unique=True, verbose_name='Chave de acesso')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)

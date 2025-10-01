@@ -60,10 +60,9 @@ class CustomSignupForm(SignupForm):
     
 
 class CompanySetupForm(forms.Form):
-    """Formulário para configuração inicial da empresa"""
+    """Formulário para configuração inicial da empresa e estabelecimento matriz"""
 
-    legal_name = forms.CharField(label='Razão Social', max_length=255)
-    slug = forms.SlugField(label='Slug', max_length=255)
+    legal_name = forms.CharField(label='Nome da empresa', help_text='Nome da empresa ou razão social que será utilizado no sistema', max_length=255)
     phone = forms.CharField(label='Telefone', max_length=15, required=False)
 
     def __init__(self, *args, **kwargs):

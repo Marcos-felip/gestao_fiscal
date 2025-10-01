@@ -1,0 +1,12 @@
+{% load crispy_forms_tags %}
+
+<form class="card card-md" method="post">
+    <div class="card-body">
+        <h2 class="card-title text-center mb-4">Criar Empresa</h2>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="form-footer">
+            {% include "ui/button.html" with type='submit' block=True text="Criar Empresa" color="primary" %}
+        </div>
+    </div>
+</form>

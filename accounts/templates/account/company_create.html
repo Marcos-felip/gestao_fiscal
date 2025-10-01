@@ -1,0 +1,10 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+<div class="container container-tight py-4">
+    <div class="text-center mb-4">
+        {% include "layout/navbar_logo.html" %}
+    </div>
+    {% include "account/forms/company_create.html" %}
+</div>
+{% endblock %}
