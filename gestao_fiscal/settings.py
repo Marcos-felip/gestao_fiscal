@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     ## Apps locais
     'accounts',
     'core',
+    'dashboard',
 
     ## Apps de terceiros
     'allauth',
