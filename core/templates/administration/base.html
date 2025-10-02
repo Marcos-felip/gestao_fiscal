@@ -1,0 +1,32 @@
+{% load static  %}
+
+<html lang="pt-br">
+  <head>
+    <title>{% block title %}{% endblock title %}</title>
+    {% block extrastyle %}{% endblock extrastyle %}
+    {% include 'includes/head.html' %}
+    {% block extrahead %}{% endblock extrahead %}
+  </head>
+  <body class="{% block body %}{% endblock body %}">
+    <script src="{% static 'dist/js/demo-theme.min.js' %}?1684106062"></script>
+    <div class="page">
+        <!-- Navbar -->
+        {% block navigation %}
+            {% include 'administration/includes/navigation.html' %}
+        {% endblock navigation %}
+        <!-- Sidebar -->
+        {% block sidebar %}
+            {% include 'administration/includes/sidebar.html' %}
+        {% endblock sidebar %}
+        <!-- Page Content -->
+        {% block content %}{% endblock content %}
+    </div>
+    <!-- Modals -->
+    {% block modal %}{% endblock modal %}
+    <!-- Tabler Core -->
+    {% block scripts %}
+        {% include 'includes/scripts.html' %}
+    {% endblock scripts %}
+    {% block extrajs %}{% endblock extrajs %}
+  </body>
+</html>
