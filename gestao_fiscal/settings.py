@@ -172,7 +172,7 @@ ACCOUNT_SIGNUP_REDIRECT_URL = 'accounts:company_create'
 LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 INTERNAL_IPS = [
     '127.0.0.1',
