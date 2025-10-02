@@ -8,6 +8,8 @@
     <title>{% block title %}Gestão Fiscal{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/tabler.min.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'intl_tel_input/css/intlTelInput.css' %}">
     {% block extra_head %}
     {% endblock %}
 </head>
@@ -23,6 +25,7 @@
         </footer>
     {% endcomment %}
     {% block scripts %}{% endblock %}
+    <script src="{% static 'intl_tel_input/js/intlTelInput.js' %}"></script>
     <script src="{% static 'js/tabler.min.js' %}"></script>
 </body>
 </html>

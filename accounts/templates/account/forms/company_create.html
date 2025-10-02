@@ -5,6 +5,7 @@
         <h2 class="card-title text-center mb-4">Criar Empresa</h2>
         {% csrf_token %}
         {{ form|crispy }}
+        {{form.media}}
         <div class="form-footer">
             {% include "ui/button.html" with type='submit' block=True text="Criar Empresa" color="primary" %}
         </div>

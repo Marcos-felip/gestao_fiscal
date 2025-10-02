@@ -2,6 +2,7 @@ from allauth.account.forms import LoginForm, SignupForm
 from django import forms
 
 from accounts.models.user import User
+from core import widgets
 
 
 class CustomLoginForm(LoginForm):
@@ -62,8 +63,17 @@ class CustomSignupForm(SignupForm):
 class CompanySetupForm(forms.Form):
     """Formulário para configuração inicial da empresa e estabelecimento matriz"""
 
-    legal_name = forms.CharField(label='Nome da empresa', help_text='Nome da empresa ou razão social que será utilizado no sistema', max_length=255)
-    phone = forms.CharField(label='Telefone', max_length=15, required=False)
+    legal_name = forms.CharField(
+        label='Nome da empresa',
+        help_text='Nome da empresa ou razão social que será utilizado no sistema',
+        max_length=255
+    )
+    phone = forms.CharField(
+        label='Telefone',
+        widget=widgets.Phone(attrs={'class': 'form-control form-control-user international_phone'}),
+        max_length=15,
+        help_text='Telefone de contato da empresa'
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
