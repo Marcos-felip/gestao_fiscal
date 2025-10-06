@@ -4,7 +4,7 @@
   <head>
     <title>{% block title %}{% endblock title %}</title>
     {% block extrastyle %}{% endblock extrastyle %}
-    {% include 'includes/head.html' %}
+    {% include 'administration/includes/head.html' %}
     {% block extrahead %}{% endblock extrahead %}
   </head>
   <body class="{% block body %}{% endblock body %}">
@@ -25,7 +25,7 @@
     {% block modal %}{% endblock modal %}
     <!-- Tabler Core -->
     {% block scripts %}
-        {% include 'includes/scripts.html' %}
+        {% include 'administration/includes/scripts.html' %}
     {% endblock scripts %}
     {% block extrajs %}{% endblock extrajs %}
   </body>
