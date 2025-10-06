@@ -140,10 +140,12 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     {% if request.user.is_authenticated %}
-                        <a href="#" class="dropdown-item">Profile</a>
-                        <a href="#" class="dropdown-item">Settings</a>
-                        <a href="#" class="dropdown-item">Change Password</a>
-                        <a href="{% url 'account_logout' %}" class="dropdown-item">Logout</a>
+                        <a href="{% url 'accounts:profile' %}" class="dropdown-item">
+                            Perfil
+                        </a>
+                        <a href="{% url 'account_logout' %}" class="dropdown-item">
+                            Sair
+                        </a>
                     {% endif %}
                 </div>
             </div>
