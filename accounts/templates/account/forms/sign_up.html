@@ -2,35 +2,45 @@
 <form class="card card-md" action="{% url 'account_signup' %}" method="post" autocomplete="off" novalidate>
 	{% csrf_token %}
 	<div class="card-body">
-		<h2 class="h2 text-center mb-4">Criar nova conta</h2>
-
+		<h2 class="card-title text-center mb-4">Criar nova conta</h2>
 		{% for field in form %}
 			{% if field.name == 'agree' %}
 				<div class="mb-3">
 					<label class="form-check">
 						<input type="checkbox" class="form-check-input" name="{{ field.name }}" id="{{ field.id_for_label }}">
-						<span class="form-check-label">Concordo com os <a href="#" tabindex="-1">termos e a política</a>.</span>
+						<span class="form-check-label">
+							Concordo com os <a href="#" tabindex="-1">termos e a política</a>.
+						</span>
 					</label>
+					{% if field.errors %}
+						<span class="text-danger d-block my-2">{{ field.errors.0 }}</span>
+					{% endif %}
+				</div>
+			{% elif field.name == 'password1' or field.name == 'password2' %}
+				<div class="mb-3">
+					<label class="form-label">{{ field.label }}</label>
+					<div class="input-group input-group-flat">
+						<input type="password" class="form-control" placeholder="{% if field.name == 'password1' %}Sua senha{% else %}Confirme sua senha{% endif %}" name="{{ field.name }}" autocomplete="new-password" id="password-{{ field.name }}">
+						<span class="input-group-text">
+							<a href="#" class="link-secondary" title="Mostrar senha" data-bs-toggle="tooltip" data-password-field="password-{{ field.name }}">
+								<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+									<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+									<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/>
+									<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"/>
+								</svg>
+							</a>
+						</span>
+					</div>
+					{% if field.errors %}
+						<span class="text-danger d-block my-2">{{ field.errors.0 }}</span>
+					{% endif %}
 				</div>
 			{% else %}
 				<div class="mb-3">
 					<label class="form-label">{{ field.label }}</label>
-					{% if field.name == 'password1' or field.name == 'password2' %}
-						<div class="input-group input-group-flat">
-							<input type="password" class="form-control" placeholder="{% if field.name == 'password1' %}Sua senha{% else %}Confirme sua senha{% endif %}" name="{{ field.name }}" autocomplete="{% if field.name == 'password1' %}new-password{% else %}new-password{% endif %}" id="password-{{ field.name }}">
-							<span class="input-group-text">
-								<a href="#" class="link-secondary" title="Mostrar senha" data-bs-toggle="tooltip" data-password-field="password-{{ field.name }}">
-									<i class="ti ti-eye ti" style="font-size: 1.2rem;"></i>
-								</a>
-							</span>
-						</div>
-					{% else %}
-						<input type="{% if field.name == 'email' %}email{% else %}text{% endif %}" class="form-control" placeholder="{% if field.name == 'name' %}Digite seu nome{% elif field.name == 'email' %}Digite seu e-mail{% endif %}" name="{{ field.name }}" autocomplete="{% if field.name == 'email' %}username{% else %}given-name{% endif %}">
-					{% endif %}
+					<input type="{% if field.name == 'email' %}email{% else %}text{% endif %}" class="form-control" placeholder="{% if field.name == 'name' %}Digite seu nome{% elif field.name == 'email' %}Digite seu e-mail{% endif %}" name="{{ field.name }}" autocomplete="{% if field.name == 'email' %}username{% else %}given-name{% endif %}">
 					{% if field.errors %}
-						<div class="invalid-feedback d-block">
-							{{ field.errors.0 }}
-						</div>
+						<span class="text-danger d-block my-2">{{ field.errors.0 }}</span>
 					{% endif %}
 					{% if field.name == 'email' %}
 						<div class="form-hint">
@@ -42,27 +52,11 @@
 		{% endfor %}
 
 		<div class="form-footer">
-			{% include "ui/button.html" with type="submit" block=True text="Criar nova conta" color="primary" %}
+			<button type="submit" class="btn btn-primary w-100">Criar nova conta</button>
 		</div>
 	</div>
 </form>
-
-<div class="text-center text-secondary mt-3">
+<div class="text-center text-muted mt-3">
 	Já tem conta? <a href="{% url 'account_login' %}" tabindex="-1">Faça login</a>
 </div>
 
-<script>
-	document.addEventListener('DOMContentLoaded', function() {
-		document.querySelectorAll('[data-password-field]').forEach(function(toggle) {
-			toggle.addEventListener('click', function(e) {
-				e.preventDefault();
-				const fieldId = this.getAttribute('data-password-field');
-				const passwordField = document.querySelector('#' + fieldId);
-				const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-				passwordField.setAttribute('type', type);
-				this.querySelector('i').classList.toggle('ti-eye');
-				this.querySelector('i').classList.toggle('ti-eye-off');
-			});
-		});
-	});
-</script>
