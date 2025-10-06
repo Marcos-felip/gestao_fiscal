@@ -9,12 +9,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'intl_tel_input/css/intlTelInput.css' %}">
     {% block extrastyle %}{% endblock extrastyle %}
-    {% include 'includes/head.html' %}
+    {% include 'account/includes/head.html' %}
   </head>
   <body  class="{% block body %}{% endblock body %} ">
     <script src="{% static 'dist/js/demo-theme.min.js' %}?1684106062"></script>
     {% block content %}{% endblock content %}
-    {% include 'includes/scripts.html' %}
+    {% include 'account/includes/scripts.html' %}
     {% block extrajs %}{% endblock extrajs %}
   </body>
 </html>
