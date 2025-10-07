@@ -13,7 +13,27 @@
   </head>
   <body  class="{% block body %}{% endblock body %} ">
     <script src="{% static 'dist/js/demo-theme.min.js' %}?1684106062"></script>
-    {% block content %}{% endblock content %}
+    <div class="page-wrapper">
+      <!-- Page header -->
+      <div class="page-header d-print-none">
+        <div class="container-xl">
+          <div class="row g-2 align-items-center">
+            <div class="col">
+              <h2 class="page-title">
+                {% block titlebody %}{% endblock %}
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Page body -->
+      <div class="page-body">
+        <div class="container-xl">
+          {% block content %}{% endblock content %}
+        </div>
+      </div>
+      {% include 'account/includes/footer.html' %}
+    </div>
     {% include 'account/includes/scripts.html' %}
     {% block extrajs %}{% endblock extrajs %}
   </body>
