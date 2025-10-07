@@ -7,5 +7,6 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('company/create/', login_required(company.CompanyCreateView.as_view()), name='company_create'),
-    path('profile/', login_required(profile.ProfileView.as_view()), name='profile'),
+    path('base/', login_required(profile.BaseProfileView.as_view()), name='base_profile'),
+    path('', login_required(profile.ProfileView.as_view()), name='profile'),
 ]
