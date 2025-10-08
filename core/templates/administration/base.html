@@ -20,23 +20,22 @@
       {% endblock sidebar %}
       <div class="page-wrapper">
         <!-- Page header -->
-          <div class="container-xl mt-3">
-            <div class="row g-2 align-items-center">
-              <div class="col">
-                <h2 class="page-title">
-                  {% block titlebody %}{% endblock %}
-                </h2>
-              </div>
+        <div class="container-xl mt-3">
+          <div class="row g-2 align-items-center">
+            <div class="col">
+              <h2 class="page-title">
+                {% block titlebody %}{% endblock %}
+              </h2>
             </div>
           </div>
+        </div>
         <!-- Page body -->
         <div class="page-body">
           <div class="container-xl">
             {% block content %}{% endblock content %}
           </div>
         </div>
-        {% include 'account/includes/footer.html' %}
-    </div>
+      </div>
     </div>
     <!-- Modals -->
     {% block modal %}{% endblock modal %}
