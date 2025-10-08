@@ -1,0 +1,73 @@
+{% extends "administration/base.html" %}
+
+{% load static %}
+
+{% block title %}Usuários - Gestão Fiscal{% endblock title %}
+
+{% block titlebody %}Usuários do Sistema{% endblock titlebody %}
+
+{% block content %}
+
+<div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'dashboard:user_create' %}" class="btn btn-primary">Novo Usuário</a>
+</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-vcenter table-mobile-md card-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Perfil</th>
+                    <th class="w-1"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for membership in object_list %}
+                <tr>
+                    <td data-label="Nome">
+                        <div class="d-flex py-1 align-items-center">
+                            <span class="avatar me-2" style="background-image: url({% static 'static/avatars/000m.jpg' %})"></span>
+                            <div class="flex-fill">
+                                <div class="font-weight-medium">
+                                    {{ membership.user.first_name|default:"" }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-label="Email">
+                        <div>{{ membership.user.email }}</div>
+                    </td>
+                    <td class="text-muted" data-label="Função">
+                        {{ membership.get_role_display|default:"" }}
+                    </td>
+                    <td>
+                        <div class="btn-list flex-nowrap">
+                            <a href="{% url 'dashboard:user_update' membership.pk %}" class="btn">
+                                Editar
+                            </a>
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+                                    Ações
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="{% url 'dashboard:user_delete' membership.pk %}">
+                                        Desativar
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">Nenhum usuário encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}
