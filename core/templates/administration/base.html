@@ -10,16 +10,33 @@
   <body class="{% block body %}{% endblock body %}">
     <script src="{% static 'dist/js/demo-theme.min.js' %}?1684106062"></script>
     <div class="page">
-        <!-- Navbar -->
-        {% block navigation %}
-            {% include 'administration/includes/navigation.html' %}
-        {% endblock navigation %}
-        <!-- Sidebar -->
-        {% block sidebar %}
-            {% include 'administration/includes/sidebar.html' %}
-        {% endblock sidebar %}
-        <!-- Page Content -->
-        {% block content %}{% endblock content %}
+      <!-- Navbar -->
+      {% block navigation %}
+        {% include 'administration/includes/navigation.html' %}
+      {% endblock navigation %}
+      <!-- Sidebar -->
+      {% block sidebar %}
+        {% include 'administration/includes/sidebar.html' %}
+      {% endblock sidebar %}
+      <div class="page-wrapper">
+        <!-- Page header -->
+          <div class="container-xl mt-3">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <h2 class="page-title">
+                  {% block titlebody %}{% endblock %}
+                </h2>
+              </div>
+            </div>
+          </div>
+        <!-- Page body -->
+        <div class="page-body">
+          <div class="container-xl">
+            {% block content %}{% endblock content %}
+          </div>
+        </div>
+        {% include 'account/includes/footer.html' %}
+    </div>
     </div>
     <!-- Modals -->
     {% block modal %}{% endblock modal %}
