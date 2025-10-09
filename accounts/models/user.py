@@ -30,7 +30,9 @@ class Membership(CompanyBaseModel):
         MEMBER = 'member', 'Membro'
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='memberships')
-    role = models.CharField(max_length=20, choices=Role.choices, default=Role.MEMBER)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='memberships_company')
+    permissions = models.ManyToManyField('Permission', blank=True, related_name='memberships_permissions')
+    role = models.CharField(max_length=10, choices=Role.choices, default=Role.MEMBER)
     key = models.CharField(max_length=50, unique=True, verbose_name='Chave de acesso')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -45,3 +47,16 @@ class Membership(CompanyBaseModel):
 
     def __str__(self):
         return f"{self.user.username} @ {self.company.legal_name} ({self.role})"
+    
+class Permission(models.Model):
+    """Permissões específicas atribuídas a um usuário dentro de uma empresa."""
+    name = models.CharField(max_length=100, verbose_name='Nome da Permissão')
+    codename = models.CharField(max_length=100, unique=True, verbose_name='Código da Permissão')
+
+    class Meta:
+        verbose_name = 'Permissão'
+        verbose_name_plural = 'Permissões'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
