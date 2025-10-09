@@ -35,8 +35,8 @@ class Establishment(CompanyBaseModel):
     """Estabelecimento físico/fiscal (matriz ou filial) emissor de documentos fiscais."""
 
     class Environment(models.TextChoices):
-        PRODUCTION = 'production', 'Production'
-        HOMOLOGATION = 'homologation', 'Homologation'
+        PRODUCTION = 'production', 'Produção'
+        HOMOLOGATION = 'homologation', 'Homologação'
 
     cnpj = models.CharField(max_length=14, null=True, unique=True, verbose_name='CNPJ')
     state_registration = models.CharField(max_length=20, null=True, blank=True, verbose_name='Inscrição Estadual')

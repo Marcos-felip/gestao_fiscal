@@ -1,0 +1,29 @@
+{% extends "administration/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %}Cadastro de Empresa - Gestão Fiscal{% endblock title %}
+
+{% block titlebody %}Cadastro de Empresa{% endblock titlebody %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"> Criar Novo Usuário</h3>
+    </div>
+    <div class="card-body">
+        <form class="space-y">
+            {% csrf_token %}
+            {{ form|crispy }}
+            {{form.media}}
+            <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-primary btn-3">
+                    Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
