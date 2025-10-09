@@ -1,5 +1,7 @@
 {% extends "administration/base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% load static %}
 
 {% block title %}Criar Usuário - Gestão Fiscal{% endblock title %}
@@ -13,69 +15,27 @@
     </div>
     <div class="card-body">
         <form class="space-y">
-            <div>
-                <div class="input-icon">
-                    <span class="input-icon-addon">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/user -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                        </svg>
-                    </span>
-                    <input type="text" value="" class="form-control" placeholder="Username">
-                </div>
-            </div>
-            <div>
-                <div class="input-icon">
-                    <span class="input-icon-addon">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/mail -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                            <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"></path>
-                            <path d="M3 7l9 6l9 -6"></path>
-                        </svg>
-                    </span>
-                    <input type="mail" value="" class="form-control" placeholder="Email address">
-                </div>
-            </div>
-            <div>
-                <div class="input-icon">
-                    <span class="input-icon-addon">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/lock -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                            <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"></path>
-                            <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
-                            <path d="M8 11v-4a4 4 0 1 1 8 0v4"></path>
-                        </svg>
-                    </span>
-                    <input type="password" value="" class="form-control" placeholder="Password">
-                </div>
-            </div>
-            <div>
-                <div class="input-icon">
-                    <span class="input-icon-addon">
-                        <!-- Download SVG icon from http://tabler.io/icons/icon/lock -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                            <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"></path>
-                            <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
-                            <path d="M8 11v-4a4 4 0 1 1 8 0v4"></path>
-                        </svg>
-                    </span>
-                    <input type="password" value="" class="form-control" placeholder="Confirm Password">
-                </div>
-            </div>
+            {% csrf_token %}
+            {{ form|crispy }}
+            {{form.media}}
             <div class="d-flex justify-content-end mb-3">
-                <a href="#" class="btn btn-primary btn-3">
-                    Create Account
-                    <!-- Download SVG icon from http://tabler.io/icons/icon/arrow-right -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-end icon-2">
-                        <path d="M5 12l14 0"></path>
-                        <path d="M13 18l6 -6"></path>
-                        <path d="M13 6l6 6"></path>
-                    </svg>
-                </a>
+                <button class="btn btn-primary btn-3">
+                    Salvar
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 {% endblock content %}
+
+{% block extrajs %}
+<script>
+
+$(document).ready(function() {
+    $('#id_permissions').select2({
+    });
+});
+
+</script>
+{% endblock extrajs %}

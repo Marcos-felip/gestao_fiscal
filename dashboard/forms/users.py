@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from accounts.models.user import User, Membership
+from accounts.models.user import Permission, User, Membership
 
 
 class UserMembershipForm(forms.ModelForm):
@@ -20,16 +20,30 @@ class UserMembershipForm(forms.ModelForm):
         max_length=128,
         label='Confirmar senha',
     )
+    permissions = forms.ModelMultipleChoiceField(
+        queryset=Permission.objects.all(),
+        widget=forms.SelectMultiple,
+        required=False,
+        label='Permissões',
+        help_text='Permissões específicas atribuídas a este usuário nesta empresa.'
+    )
 
     class Meta:
         model = Membership
         fields = [
-            'role',
             'name',
             'email',
+            'role',
+            'permissions',
             'password',
-            'password_confirm'
+            'password_confirm',
         ]
+        labels = {
+            'role': 'Função',
+        }
+        help_texts = {
+            'role': 'Função do usuário dentro da empresa.',
+        }
     
     def __init__(self, *args, **kwargs):
         self.company_obj = kwargs.pop('company_obj', None)
@@ -79,6 +93,8 @@ class UserMembershipForm(forms.ModelForm):
             user.first_name = first_name
             user.last_name = last_name
             user.save()
+        user.user_permissions.set(self.cleaned_data['permissions'])
+        user.save()
         membership.user = user
 
         if commit:
