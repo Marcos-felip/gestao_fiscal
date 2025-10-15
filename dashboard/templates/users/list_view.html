@@ -8,53 +8,110 @@
 
 {% block content %}
 
-<div class="d-flex justify-content-end mb-3">
-    <a href="{% url 'dashboard:user_create' %}" class="btn btn-primary">Novo Usuário</a>
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="d-flex">
+            <div class="input-icon flex-grow-1 me-3">
+                <span class="input-icon-addon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                </span>
+                <input type="text" class="form-control" placeholder="Buscar por nome ou email" name="search" value="{{ current_search }}">
+            </div>
+            
+            <div class="btn-group me-2" role="group" aria-label="Filtrar status">
+                <input type="radio" class="btn-check" name="status" id="status-all" value="all" {% if current_status == 'all' or not current_status %}checked{% endif %} onchange="this.form.submit()">
+                <label class="btn btn-outline-primary" for="status-all">Todos</label>
+                
+                <input type="radio" class="btn-check" name="status" id="status-active" value="active" {% if current_status == 'active' %}checked{% endif %} onchange="this.form.submit()">
+                <label class="btn btn-outline-primary" for="status-active">Ativos</label>
+                
+                <input type="radio" class="btn-check" name="status" id="status-inactive" value="inactive" {% if current_status == 'inactive' %}checked{% endif %} onchange="this.form.submit()">
+                <label class="btn btn-outline-primary" for="status-inactive">Inativos</label>
+            </div>
+            
+            {% if current_search or current_status != 'all' %}
+            <a href="{% url 'dashboard:user_list' %}" class="btn btn-outline-secondary me-2" title="Limpar filtros">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                Limpar
+            </a>
+            {% endif %}
+            
+            <button type="submit" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+                Buscar
+            </button>
+        </form>
+    </div>
 </div>
 
 <div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Usuários</h3>
+        <div class="card-actions">
+            <a href="{% url 'dashboard:user_create' %}" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                Novo Usuário
+            </a>
+        </div>
+    </div>
     <div class="table-responsive">
-        <table class="table table-vcenter table-mobile-md card-table">
+        <table class="table table-vcenter table-mobile-md card-table" id="users-table">
             <thead>
                 <tr>
                     <th>Nome</th>
                     <th>Email</th>
                     <th>Perfil</th>
+                    <th>Status</th>
                     <th class="w-1"></th>
                 </tr>
             </thead>
             <tbody>
                 {% for membership in object_list %}
-                <tr>
+                <tr class="user-row {% if membership.is_active %}active-user{% else %}inactive-user{% endif %}">
                     <td data-label="Nome">
                         <div class="d-flex py-1 align-items-center">
-                            <span class="avatar me-2" style="background-image: url({% static 'static/avatars/000m.jpg' %})"></span>
+                            <span class="avatar avatar-sm me-2 avatar-rounded">{{ membership.user.first_name|first|upper }}</span>
                             <div class="flex-fill">
-                                <div class="font-weight-medium">
-                                    {{ membership.user.first_name|default:"" }}
+                                <div class="font-medium">
+                                    {{ membership.user.first_name|default:"" }} {{ membership.user.last_name|default:"" }}
                                 </div>
                             </div>
                         </div>
                     </td>
                     <td data-label="Email">
-                        <div>{{ membership.user.email }}</div>
+                        <div class="text-muted">{{ membership.user.email }}</div>
                     </td>
-                    <td class="text-muted" data-label="Função">
-                        {{ membership.get_role_display|default:"" }}
+                    <td data-label="Função">
+                        <span class="badge bg-blue-lt">{{ membership.get_role_display|default:"" }}</span>
+                    </td>
+                    <td data-label="Status">
+                        {% if membership.is_active %}
+                        <span class="badge bg-green-lt">Ativo</span>
+                        {% else %}
+                        <span class="badge bg-red-lt">Inativo</span>
+                        {% endif %}
                     </td>
                     <td>
                         <div class="btn-list flex-nowrap">
-                            <a href="{% url 'dashboard:user_update' membership.pk %}" class="btn">
-                                Editar
+                            <a href="{% url 'dashboard:user_update' membership.pk %}" class="btn btn-ghost-primary btn-icon" data-bs-toggle="tooltip" title="Editar">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
                             </a>
                             <div class="dropdown">
-                                <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
-                                    Ações
+                                <button class="btn btn-ghost-secondary btn-icon" data-bs-toggle="dropdown" aria-label="Ações">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dots-vertical" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="{% url 'dashboard:user_delete' membership.pk %}">
-                                        Desativar
-                                    </a>
+                                    {% if membership.is_active %}
+                                        <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ membership.pk }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-off dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8.18 8.189a4.01 4.01 0 0 0 2.616 2.627m3.507 -.545a4 4 0 1 0 -5.59 -5.552" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4c.412 0 .81 .062 1.183 .178m2.633 2.618c.12 .38 .184 .785 .184 1.204v2" /><path d="M3 3l18 18" /></svg>
+                                            Desativar
+                                        </button>
+                                    {% else %}
+                                        <button class="dropdown-item text-success" data-bs-toggle="modal" data-bs-target="#reactivateModal-{{ membership.pk }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4" /><path d="M15 19l2 2l4 -4" /></svg>
+                                            Reativar
+                                        </button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
@@ -69,5 +126,20 @@
         </table>
     </div>
 </div>
+
+<!-- Modal de Confirmação de Desativação e Reativação -->
+{% for membership in object_list %}
+    <div class="modal fade" id="deleteModal-{{ membership.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ membership.pk }}" aria-hidden="true">
+        <div class="modal-dialog">
+            {% include "users/partial/delete_view.html" with membership=membership %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="reactivateModal-{{ membership.pk }}" tabindex="-1" aria-labelledby="reactivateModalLabel-{{ membership.pk }}" aria-hidden="true">
+        <div class="modal-dialog">
+            {% include "users/partial/reactivate_view.html" with membership=membership %}
+        </div>
+    </div>
+{% endfor %}
 
 {% endblock content %}

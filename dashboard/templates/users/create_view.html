@@ -14,12 +14,12 @@
         <h3 class="card-title"> Criar Novo Usuário</h3>
     </div>
     <div class="card-body">
-        <form class="space-y">
+        <form method="post" class="space-y">
             {% csrf_token %}
             {{ form|crispy }}
             {{form.media}}
             <div class="d-flex justify-content-end mb-3">
-                <button class="btn btn-primary btn-3">
+                <button type="submit" class="btn btn-primary btn-3">
                     Salvar
                 </button>
             </div>
@@ -33,8 +33,25 @@
 <script>
 
 $(document).ready(function() {
-    $('#id_permissions').select2({
-    });
+    $('#id_permissions').select2({});
+
+    /* Função para ocultar/mostrar o field permissions
+
+        Se role for 'admin' ou 'owner', oculta o campo permissions
+        Senão, mostra o campo permissions
+    */
+    function togglePermissions() {
+        let role = $('#id_role').val();
+        if (role === 'admin' || role === 'owner') {
+            $('#id_permissions').closest('.mb-3').hide();
+        } else {
+            $('#id_permissions').closest('.mb-3').show();
+        }
+    }
+
+    togglePermissions();
+
+    $('#id_role').change(togglePermissions);
 });
 
 </script>

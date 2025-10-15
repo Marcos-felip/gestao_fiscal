@@ -1,6 +1,8 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from accounts.models.user import User, Membership, Company
 from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from django.shortcuts import redirect
 
 from dashboard.forms.users import UserMembershipForm
 
@@ -11,17 +13,38 @@ class UserListView(ListView):
     """
     model = Membership
     template_name = 'users/list_view.html'
-
-    def context_data(self, **kwargs):
-        context = super().context_data(**kwargs)
-        return context
     
     def get_queryset(self):
         company = self.request.user.company_active
-        print(' company', company)
         queryset = Membership.objects.filter(company=company)
-        print(' queryset', queryset)
+        
+        # Aplicar filtros
+        status = self.request.GET.get('status', 'all')
+        search = self.request.GET.get('search', '')
+        
+        # Filtrar por status (ativo/inativo)
+        if status == 'active':
+            queryset = queryset.filter(is_active=True)
+        elif status == 'inactive':
+            queryset = queryset.filter(is_active=False)
+            
+        # Busca por nome ou email
+        if search:
+            queryset = queryset.filter(
+                user__email__icontains=search
+            ) | queryset.filter(
+                user__first_name__icontains=search
+            ) | queryset.filter(
+                user__last_name__icontains=search
+            )
+            
         return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_status'] = self.request.GET.get('status', 'all')
+        context['current_search'] = self.request.GET.get('search', '')
+        return context
 
 
 class UserCreateView(CreateView):
@@ -57,16 +80,41 @@ class UserUpdateView(UpdateView):
         return kwargs
 
 
-class UserDeleteView(UpdateView):
+class UserDeleteView(DeleteView):
     """
         View para desativar um usuário existente.
     """
-    template_name = 'users/delete_view.html'
+
+    template_name = 'users/partial/delete_view.html'
     model = Membership
     success_url = reverse_lazy('dashboard:user_list')
 
-    def form_valid(self, form):
+    def post(self, request, *args, **kwargs):
         membership = self.get_object()
+        if self.request.user.company_active == membership.user.company_active:
+            membership.user.company_active = None
+            membership.user.save()
         membership.is_active = False
         membership.save()
-        return super().form_valid(form)
+            
+        return redirect(self.success_url)
+
+
+class UserReactivateView(UpdateView):
+    """
+        View para reativar um usuário existente.
+    """
+    template_name = 'users/partial/reactivate_view.html'
+    model = Membership
+    fields = []
+    success_url = reverse_lazy('dashboard:user_list')
+
+    def post(self, request, *args, **kwargs):
+        membership = self.get_object()
+        if self.request.user.company_active == membership.user.company_active:
+            membership.user.company_active = membership.company
+            membership.user.save()
+        membership.is_active = True
+        membership.save()
+            
+        return redirect(self.success_url)

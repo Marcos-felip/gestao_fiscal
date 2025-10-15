@@ -10,5 +10,6 @@ urlpatterns = [
     path('users/create/', login_required(users.UserCreateView.as_view()), name='user_create'),
     path('users/<int:pk>/update/', login_required(users.UserUpdateView.as_view()), name='user_update'),
     path('users/<int:pk>/delete/', login_required(users.UserDeleteView.as_view()), name='user_delete'),
+    path('users/<int:pk>/reactivate/', login_required(users.UserReactivateView.as_view()), name='user_reactivate'),
     path('company/<int:pk>/update/', login_required(company.CompanyUpdateView.as_view()), name='company_update'),
 ]
