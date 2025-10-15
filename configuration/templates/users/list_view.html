@@ -12,7 +12,7 @@
     <div class="card-body">
         <form 
             class="d-flex" 
-            hx-get="{% url 'dashboard:user_list' %}" 
+            hx-get="{% url 'configuration:user_list' %}" 
             hx-target="#users-table" 
             hx-trigger="change from:.filter-control, submit" 
             hx-swap="innerHTML"
@@ -48,7 +48,7 @@
     <div class="card-header">
         <h3 class="card-title">Usuários</h3>
         <div class="card-actions">
-            <a href="{% url 'dashboard:user_create' %}" class="btn btn-primary">
+            <a href="{% url 'configuration:user_create' %}" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                 Novo Usuário
             </a>

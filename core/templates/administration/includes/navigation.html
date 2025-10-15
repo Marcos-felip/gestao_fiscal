@@ -32,7 +32,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end">
                         <h6 class="dropdown-header">Configurações</h6>
-                        <a href="{% url 'dashboard:company_update' request.user.company_active.pk %}" class="dropdown-item">
+                        <a href="{% url 'configuration:company_update' request.user.company_active.pk %}" class="dropdown-item">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                 <path d="M3 21l18 0" />
@@ -46,7 +46,7 @@
                             </svg>
                             Cadastro da Empresa
                         </a>
-                        <a href="{% url 'dashboard:user_list' %}" class="dropdown-item">
+                        <a href="{% url 'configuration:user_list' %}" class="dropdown-item">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                 <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />

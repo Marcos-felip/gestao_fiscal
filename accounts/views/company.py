@@ -11,7 +11,7 @@ class CompanyCreateView(FormView):
     """
     form_class = CompanySetupForm
     template_name = 'account/company_create.html'
-    success_url = reverse_lazy('dashboard:home')
+    success_url = reverse_lazy('configuration:home')
 
     def form_valid(self, form):
         user = self.request.user

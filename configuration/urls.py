@@ -1,8 +1,8 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
-from dashboard.views import home, users, company
+from configuration.views import home, users, company
 
-app_name = 'dashboard'
+app_name = 'configuration'
 
 urlpatterns = [
     path('', login_required(home.HomeView.as_view()), name='home'),

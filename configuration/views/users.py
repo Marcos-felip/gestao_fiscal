@@ -2,7 +2,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from accounts.models.user import Membership
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from dashboard.forms.users import UserMembershipForm
+from configuration.forms.users import UserMembershipForm
 
 
 class UserListView(ListView):
@@ -58,7 +58,7 @@ class UserCreateView(CreateView):
     template_name = 'users/create_view.html'
     model = Membership
     form_class = UserMembershipForm
-    success_url = reverse_lazy('dashboard:user_list')
+    success_url = reverse_lazy('configuration:user_list')
 
     def get_form_kwargs(self):
         kwargs = super(UserCreateView, self).get_form_kwargs()
@@ -74,7 +74,7 @@ class UserUpdateView(UpdateView):
     template_name = 'users/create_view.html'
     model = Membership
     form_class = UserMembershipForm
-    success_url = reverse_lazy('dashboard:user_list')
+    success_url = reverse_lazy('configuration:user_list')
 
     def get_form_kwargs(self):
         kwargs = super(UserUpdateView, self).get_form_kwargs()
@@ -91,7 +91,7 @@ class UserDeleteView(DeleteView):
 
     template_name = 'users/includes/delete_view.html'
     model = Membership
-    success_url = reverse_lazy('dashboard:user_list')
+    success_url = reverse_lazy('configuration:user_list')
 
     def post(self, request, *args, **kwargs):
         membership = self.get_object()
@@ -111,7 +111,7 @@ class UserReactivateView(UpdateView):
     template_name = 'users/includes/reactivate_view.html'
     model = Membership
     fields = []
-    success_url = reverse_lazy('dashboard:user_list')
+    success_url = reverse_lazy('configuration:user_list')
 
     def post(self, request, *args, **kwargs):
         membership = self.get_object()

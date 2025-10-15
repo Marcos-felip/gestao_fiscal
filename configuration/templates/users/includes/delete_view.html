@@ -20,7 +20,7 @@
                 </div>
                 <div class="col">
                     <form 
-                        hx-post="{% url 'dashboard:user_delete' membership.pk %}" 
+                        hx-post="{% url 'configuration:user_delete' membership.pk %}" 
                         hx-target="#users-table" 
                         hx-swap="outerHTML"
                         hx-trigger="submit"
