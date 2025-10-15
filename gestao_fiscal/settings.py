@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'core',
     'configuration',
+    'partners',
 
     ## Apps de terceiros
     'allauth',
