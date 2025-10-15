@@ -1,9 +1,7 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from accounts.models.user import User, Membership, Company
+from accounts.models.user import Membership
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from django.shortcuts import redirect
-
 from dashboard.forms.users import UserMembershipForm
 
 
