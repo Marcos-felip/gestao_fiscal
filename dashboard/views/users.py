@@ -13,6 +13,7 @@ class UserListView(ListView):
     """
     model = Membership
     template_name = 'users/list_view.html'
+    partial_template_name = 'users/partials/list_view.html'
     
     def get_queryset(self):
         company = self.request.user.company_active
@@ -45,6 +46,11 @@ class UserListView(ListView):
         context['current_status'] = self.request.GET.get('status', 'all')
         context['current_search'] = self.request.GET.get('search', '')
         return context
+    
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.headers.get('Hx-Request'):
+            self.template_name = self.partial_template_name
+        return super().render_to_response(context, **response_kwargs)
 
 
 class UserCreateView(CreateView):
@@ -85,7 +91,7 @@ class UserDeleteView(DeleteView):
         View para desativar um usuário existente.
     """
 
-    template_name = 'users/partial/delete_view.html'
+    template_name = 'users/includes/delete_view.html'
     model = Membership
     success_url = reverse_lazy('dashboard:user_list')
 
@@ -104,7 +110,7 @@ class UserReactivateView(UpdateView):
     """
         View para reativar um usuário existente.
     """
-    template_name = 'users/partial/reactivate_view.html'
+    template_name = 'users/includes/reactivate_view.html'
     model = Membership
     fields = []
     success_url = reverse_lazy('dashboard:user_list')

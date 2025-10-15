@@ -24,7 +24,7 @@
                         hx-target="#users-table" 
                         hx-swap="outerHTML"
                         hx-trigger="submit"
-                        hx-indicator=".htmx-indicator">
+                    >
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger btn-4 w-100" data-bs-dismiss="modal">Desativar</button>
                     </form>
