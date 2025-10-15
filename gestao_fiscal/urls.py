@@ -24,4 +24,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('accounts/profile/', include('accounts.urls')),
     path('', include('configuration.urls')),
+    path('', include('partners.urls')),
 ] + debug_toolbar_urls()
