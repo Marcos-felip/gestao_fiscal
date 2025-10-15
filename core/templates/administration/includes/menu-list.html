@@ -12,8 +12,8 @@
         </a>
     </li>
 
-    <li class="nav-item dropdown{% if request.resolver_match.url_name == 'user_list' %} show{% endif %}">
-        <a class="nav-link dropdown-toggle{% if request.resolver_match.url_name == 'user_list' %} active{% endif %}" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{% if request.resolver_match.url_name == 'user_list' %}true{% else %}false{% endif %}">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
             <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <!-- icon de plus -->
                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-copy-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path stroke="none" d="M0 0h24v24H0z" />
@@ -27,14 +27,11 @@
                 Cadastros
             </span>
         </a>
-        <div class="dropdown-menu{% if request.resolver_match.url_name == 'user_list' %} show{% endif %}">
+        <div class="dropdown-menu">
             <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
-                    <a class="dropdown-item {% if request.resolver_match.url_name == 'company_update' %} active {% endif %}" href="{% url 'dashboard:company_update' pk=request.user.company_active.pk %}">
-                        Empresa   
-                    </a>
-                    <a class="dropdown-item {% if request.resolver_match.url_name == 'user_list' %} active {% endif %}" href="{% url 'dashboard:user_list' %}">
-                        Usuarios
+                    <a class="dropdown-item" href="#">
+                        Clientes
                     </a>
                     {% comment %} 
                     <div class="dropend">
