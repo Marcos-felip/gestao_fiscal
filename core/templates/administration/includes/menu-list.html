@@ -12,7 +12,7 @@
         </a>
     </li>
 
-    <li class="nav-item dropdown">
+    <li class="nav-item dropdown" {% if request.resolver_match.url_name == 'customer_list' %} show {% endif %}>
         <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
             <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <!-- icon de plus -->
@@ -27,10 +27,10 @@
                 Cadastros
             </span>
         </a>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu {% if request.resolver_match.url_name == 'customer_list' %} show {% endif %}">
             <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
-                    <a class="dropdown-item" href="{% url 'partners:customer_list' %}">
+                    <a class="dropdown-item {% if request.resolver_match.url_name == 'partners:customer_list' %} active {% endif %}" href="{% url 'partners:customer_list' %}">
                         Clientes
                     </a>
                     {% comment %} 
