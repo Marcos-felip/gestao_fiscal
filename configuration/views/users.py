@@ -11,7 +11,7 @@ class UserListView(ListView):
     """
     model = Membership
     template_name = 'users/list_view.html'
-    partial_template_name = 'users/partials/list_view.html'
+    partial_template_name = 'users/includes/list_view.html'
     
     def get_queryset(self):
         company = self.request.user.company_active
