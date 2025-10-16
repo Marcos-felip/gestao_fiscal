@@ -1,5 +1,4 @@
 from django.views.generic import TemplateView, ListView, CreateView
-from partners.forms.customers import CustomerForm
 from partners.models.customers import Customer
 from django.urls import reverse_lazy
 
