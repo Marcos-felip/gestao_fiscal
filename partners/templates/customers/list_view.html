@@ -17,16 +17,6 @@
                 </span>
                 <input type="text" class="form-control" placeholder="Buscar por Nome/Razão Social ou CPF/CNPJ">
             </div>
-            <div class="btn-group me-2" role="group" aria-label="Filtrar status">
-                <input type="radio" class="btn-check" name="status" id="status-all" value="all" checked>
-                <label class="btn btn-outline-primary" for="status-all">Todos</label>
-                
-                <input type="radio" class="btn-check" name="status" id="status-active" value="active">
-                <label class="btn btn-outline-primary" for="status-active">Ativos</label>
-                
-                <input type="radio" class="btn-check" name="status" id="status-inactive" value="inactive">
-                <label class="btn btn-outline-primary" for="status-inactive">Inativos</label>
-            </div>
             <button type="submit" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
                 Buscar
@@ -39,7 +29,7 @@
     <div class="card-header">
         <h3 class="card-title">Clientes</h3>
         <div class="card-actions">
-            <a href="#" class="btn btn-primary">
+            <a href="{% url 'partners:customer_base' %}" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                     <path d="M12 5l0 14" />

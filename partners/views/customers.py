@@ -1,5 +1,7 @@
-from django.views.generic import ListView
+from django.views.generic import TemplateView, ListView, CreateView
+from partners.forms.customers import CustomerForm
 from partners.models.customers import Customer
+from django.urls import reverse_lazy
 
 
 class CustomerListView(ListView):
@@ -15,3 +17,9 @@ class CustomerListView(ListView):
         queryset = Customer.objects.filter(company=company)
         return queryset
 
+
+class CustomerTemplateView(TemplateView):
+    """
+        View para renderizar o template base do cadastro de clientes.
+    """
+    template_name = 'customers/layouts/base.html'

@@ -1,0 +1,29 @@
+{% extends "administration/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %}Criar Cliente - Gestão Fiscal{% endblock title %}
+
+{% block titlebody %} Clientes {% endblock titlebody %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"> Criar Novo Cliente</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" class="space-y">
+            {% csrf_token %}
+            {{ form|crispy }}
+            {{form.media}}
+            <div class="d-flex justify-content-end mb-3">
+                <button type="submit" class="btn btn-primary btn-3">
+                    Salvar
+                </button>
+            </div>
+        </form>
+
+{% endblock content %}
