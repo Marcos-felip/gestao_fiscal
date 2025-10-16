@@ -4,61 +4,69 @@
 
 {% block title %}Usuários - Gestão Fiscal{% endblock title %}
 
-{% block titlebody %}Usuários do Sistema{% endblock titlebody %}
+{% block titlebody %}
+<div class="row g-2 align-items-center px-4 mt-3">
+    <div class="col">
+        <h2 class="page-title">
+            Usuários do Sistema
+        </h2>
+    </div>
+</div>
+{% endblock titlebody %}
 
 {% block content %}
-
-<div class="card mb-3">
-    <div class="card-body">
-        <form 
-            class="d-flex" 
-            hx-get="{% url 'configuration:user_list' %}" 
-            hx-target="#users-table" 
-            hx-trigger="change from:.filter-control, submit" 
-            hx-swap="innerHTML"
-            hx-push-url="true"
-        >
-            <div class="input-icon flex-grow-1 me-3">
-                <span class="input-icon-addon">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
-                </span>
-                <input type="text" class="form-control filter-control" placeholder="Buscar por nome ou email" name="search" value="{{ current_search }}">
-            </div>
-            
-            <div class="btn-group me-2" role="group" aria-label="Filtrar status">
-                <input type="radio" class="btn-check filter-control" name="status" id="status-all" value="all" {% if current_status == 'all' or not current_status %}checked{% endif %}>
-                <label class="btn btn-outline-primary" for="status-all">Todos</label>
+<div class="page-body px-4">
+    <div class="card mb-3">
+        <div class="card-body">
+            <form 
+                class="d-flex" 
+                hx-get="{% url 'configuration:user_list' %}" 
+                hx-target="#users-table" 
+                hx-trigger="change from:.filter-control, submit" 
+                hx-swap="innerHTML"
+                hx-push-url="true"
+            >
+                <div class="input-icon flex-grow-1 me-3">
+                    <span class="input-icon-addon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                    </span>
+                    <input type="text" class="form-control filter-control" placeholder="Buscar por nome ou email" name="search" value="{{ current_search }}">
+                </div>
                 
-                <input type="radio" class="btn-check filter-control" name="status" id="status-active" value="active" {% if current_status == 'active' %}checked{% endif %}>
-                <label class="btn btn-outline-primary" for="status-active">Ativos</label>
-                
-                <input type="radio" class="btn-check filter-control" name="status" id="status-inactive" value="inactive" {% if current_status == 'inactive' %}checked{% endif %}>
-                <label class="btn btn-outline-primary" for="status-inactive">Inativos</label>
-            </div>
+                <div class="btn-group me-2" role="group" aria-label="Filtrar status">
+                    <input type="radio" class="btn-check filter-control" name="status" id="status-all" value="all" {% if current_status == 'all' or not current_status %}checked{% endif %}>
+                    <label class="btn btn-outline-primary" for="status-all">Todos</label>
+                    
+                    <input type="radio" class="btn-check filter-control" name="status" id="status-active" value="active" {% if current_status == 'active' %}checked{% endif %}>
+                    <label class="btn btn-outline-primary" for="status-active">Ativos</label>
+                    
+                    <input type="radio" class="btn-check filter-control" name="status" id="status-inactive" value="inactive" {% if current_status == 'inactive' %}checked{% endif %}>
+                    <label class="btn btn-outline-primary" for="status-inactive">Inativos</label>
+                </div>
 
-            <button type="submit" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
-                Buscar
-            </button>
-        </form>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Usuários</h3>
-        <div class="card-actions">
-            <a href="{% url 'configuration:user_create' %}" class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                Novo Usuário
-            </a>
+                <button type="submit" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+                    Buscar
+                </button>
+            </form>
         </div>
     </div>
-    <div class="table-responsive" id="users-table">
-        {% include "users/includes/list_view.html" %}
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Usuários</h3>
+            <div class="card-actions">
+                <a href="{% url 'configuration:user_create' %}" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    Novo Usuário
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive" id="users-table">
+            {% include "users/includes/list_view.html" %}
+        </div>
     </div>
 </div>
-
 <!-- Modal de Confirmação de Desativação e Reativação -->
 {% for membership in object_list %}
     <div class="modal fade" id="deleteModal-{{ membership.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ membership.pk }}" aria-hidden="true">

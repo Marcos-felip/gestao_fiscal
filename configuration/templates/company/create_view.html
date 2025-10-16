@@ -6,24 +6,34 @@
 
 {% block title %}Cadastro de Empresa - Gestão Fiscal{% endblock title %}
 
-{% block titlebody %}Cadastro de Empresa{% endblock titlebody %}
+{% block titlebody %}
+<div class="container-xl mt-3">
+    <div class="row g-2 align-items-center">
+        <div class="col">
+            <h2 class="page-title">Cadastro de Empresa</h2>
+        </div>
+    </div>
+</div>
+{% endblock titlebody %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title"> Cadastro de Empresa</h3>
-    </div>
-    <div class="card-body">
-        <form class="space-y">
-            {% csrf_token %}
-            {{ form|crispy }}
-            {{form.media}}
-            <div class="d-flex justify-content-end mb-3">
-                <button class="btn btn-primary btn-3">
-                    Salvar
-                </button>
-            </div>
-        </form>
+<div class="container-xl mt-3">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"> Cadastro de Empresa</h3>
+        </div>
+        <div class="card-body">
+            <form class="space-y">
+                {% csrf_token %}
+                {{ form|crispy }}
+                {{form.media}}
+                <div class="d-flex justify-content-end mb-3">
+                    <button class="btn btn-primary btn-3">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock content %}
