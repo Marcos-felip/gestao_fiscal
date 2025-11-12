@@ -9,5 +9,11 @@
 {% block titlebody %} Clientes {% endblock titlebody %}
 
 {% block card_content %}
-
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+</form>
 {% endblock card_content %}
