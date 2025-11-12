@@ -32,7 +32,7 @@ class PartnerBaseModel(CompanyBaseModel):
     name = models.CharField(max_length=255, verbose_name='Nome/Razão Social')
     trading_name = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nome Fantasia')
     cpf_cnpj = models.CharField(max_length=14, verbose_name='CPF/CNPJ')
-    person_type = models.CharField(max_length=2, choices=PERSON_TYPE.choices, verbose_name='Tipo de Pessoa')
+    person_type = models.CharField(max_length=2, choices=PERSON_TYPE.choices, default=PERSON_TYPE.PF, verbose_name='Tipo de Pessoa')
     partner_type = models.CharField(max_length=10, choices=PARTNER_TYPE.choices, null=True, blank=True, verbose_name='Tipo de Parceiro')
     tax_regime = models.CharField(max_length=20, choices=TaxRegime.choices, blank=True, null=True, verbose_name='Regime Tributário')
     tax_payer_type = models.CharField(max_length=20, choices=TaxPayerType.choices, blank=True, null=True, verbose_name='Tipo de Contribuinte')
