@@ -20,8 +20,52 @@
 <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
+    {{form.media}}
     <button type="submit" class="btn btn-primary">
         Salvar
     </button>
 </form>
 {% endblock card_content %}
+
+{% block extrajs %}
+<script>
+
+    /* Função para ocultar ou mostrar campos com base no tipo de pessoa
+    */
+
+    function togglePersonType() {
+        let personType = $('#id_person_type').val();
+        if (personType === 'PJ') {
+            $('#id_cnpj').closest('.mb-3').show();
+            $('#id_state_registration').closest('.mb-3').show();
+            $('#id_tax_payer_type').closest('.mb-3').show();
+            $('#id_tax_regime').closest('.mb-3').show();
+            $('#id_municipal_registration').closest('.mb-3').show();
+            $('#id_is_exempt').closest('.mb-3').show();
+            $('#id_trading_name').closest('.mb-3').show();
+            $('#id_cpf').closest('.mb-3').hide();
+        } else if (personType === 'PF') {
+            $('#id_municipal_registration').closest('.mb-3').hide();
+            $('#id_tax_payer_type').closest('.mb-3').hide();
+            $('#id_tax_regime').closest('.mb-3').hide();
+            $('#id_cnpj').closest('.mb-3').hide();
+            $('#id_is_exempt').closest('.mb-3').hide();
+            $('#id_state_registration').closest('.mb-3').hide();
+            $('#id_trading_name').closest('.mb-3').hide();
+            $('#id_cpf').closest('.mb-3').show();
+        }
+    }
+
+    togglePersonType();
+
+    $('#id_person_type').change(function() {
+        togglePersonType();
+    });
+
+    $('#id_cpf').mask('000.000.000-00');
+    $('#id_cnpj').mask('00.000.000/0000-00');
+    $('#id_cellphone').mask('(00) 00000-0000');
+    $('#id_credit_limit').mask('999.999.999.999.999,99', {reverse: true});
+
+</script>
+{% endblock extrajs %}

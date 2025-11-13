@@ -37,7 +37,12 @@ class CustomerBasicCreateView(CreateView):
     model = Customer
     form_class = CustomerBasicForm
     template_name = 'customers/forms/basic_info.html'
-    success_url = reverse_lazy('partners:customers:list')
+    success_url = reverse_lazy('partners:customer_list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.request.user.company_active
+        return kwargs
 
     def form_valid(self, form):
         form.instance.company = self.request.user.company_active

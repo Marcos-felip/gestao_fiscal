@@ -12,4 +12,10 @@ class Phone(forms.TextInput):
         super(Phone, self).__init__(attrs)
 
     class Media:
-        js = ["js/phone.js"]
+        css = {
+            'all': ['css/phone_widget.css']
+        }
+        js = [
+            "intl_tel_input/js/intlTelInput.min.js",
+            "js/phone.js"
+        ]
