@@ -7,4 +7,5 @@ urlpatterns = [
     path('customers/', customers.CustomerListView.as_view(), name='customer_list'),
     path('customers/create/', customers.CustomerTemplateView.as_view(), name='customer_base'),
     path('customers/create/basic/', customers.CustomerBasicCreateView.as_view(), name='customer_create_basic'),
+    path('customers/<int:pk>/edit/', customers.CustomerUpdateView.as_view(), name='customer_update'),
 ]

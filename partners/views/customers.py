@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 from partners.models.customers import Customer
 from partners.forms.customers import CustomerBasicForm
 from django.urls import reverse_lazy
@@ -47,3 +47,18 @@ class CustomerBasicCreateView(CreateView):
     def form_valid(self, form):
         form.instance.company = self.request.user.company_active
         return super().form_valid(form)
+
+
+class CustomerUpdateView(UpdateView):
+    """
+        View para atualizar um cliente existente.
+    """
+    model = Customer
+    form_class = CustomerBasicForm
+    template_name = 'customers/forms/basic_info.html'
+    success_url = reverse_lazy('partners:customer_list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.request.user.company_active
+        return kwargs
