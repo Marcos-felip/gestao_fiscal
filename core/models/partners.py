@@ -1,5 +1,6 @@
 from django.db import models
 from core.models.company import CompanyBaseModel
+from core.models.address import Address
 
 
 class PartnerBaseModel(CompanyBaseModel):
@@ -41,7 +42,7 @@ class PartnerBaseModel(CompanyBaseModel):
     email = models.EmailField(blank=True, null=True, verbose_name='Email')
     phone = models.CharField(max_length=15, blank=True, null=True, verbose_name='Telefone')
     cellphone = models.CharField(max_length=15, blank=True, null=True, verbose_name='Celular')
-    address = models.ForeignKey('accounts.Address', on_delete=models.PROTECT, null=True, blank=True, related_name='%(class)ss')
+    address = models.ForeignKey(Address, on_delete=models.PROTECT, null=True, blank=True, related_name='%(class)ss')
     notes = models.TextField(blank=True, null=True, verbose_name='Observações')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

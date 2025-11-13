@@ -1,7 +1,7 @@
 from django.db import models
 import uuid
 from django.utils import timezone
-from accounts.models.address import Address
+from core.models.address import Address
 from core.models.company import CompanyBaseModel
 
 
