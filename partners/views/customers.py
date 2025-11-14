@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 from partners.models.customers import Customer
-from partners.forms.customers import CustomerBasicForm
+from core.models.address import Address
+from partners.forms.customers import CustomerAddressForm, CustomerAdvancedForm, CustomerBasicForm
 from django.urls import reverse_lazy
 
 
@@ -37,7 +38,9 @@ class CustomerBasicCreateView(CreateView):
     model = Customer
     form_class = CustomerBasicForm
     template_name = 'customers/forms/basic_info.html'
-    success_url = reverse_lazy('partners:customer_list')
+
+    def get_success_url(self):
+        return reverse_lazy('partners:customer_advanced', kwargs={'pk': self.object.pk})
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -62,3 +65,54 @@ class CustomerUpdateView(UpdateView):
         kwargs = super().get_form_kwargs()
         kwargs['company'] = self.request.user.company_active
         return kwargs
+
+
+class CustomerAdvancedUpdateView(UpdateView):
+    """
+        View para atualizar informações avançadas de um cliente existente.
+    """
+    model = Customer
+    form_class = CustomerAdvancedForm
+    template_name = 'customers/forms/advanced_info.html'
+
+    def get_success_url(self):
+        return reverse_lazy('partners:customer_advanced', kwargs={'pk': self.object.pk})
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.request.user.company_active
+        return kwargs
+
+
+class CustomerAddressUpdateView(UpdateView):
+    """
+        View para atualizar o endereço de um cliente existente.
+    """
+    model = Customer
+    form_class = CustomerAddressForm
+    template_name = 'customers/forms/address.html'
+
+    def get_success_url(self):
+        return reverse_lazy('partners:customer_address', kwargs={'pk': self.object.pk})
+
+    def get_object(self, queryset=None):
+        customer = super().get_object(queryset)
+        self.customer = customer
+        return customer
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['company'] = self.request.user.company_active
+        kwargs['customer'] = self.customer
+        
+        if self.customer.address:
+            kwargs['instance'] = self.customer.address
+        else:
+            kwargs.pop('instance', None)
+        
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = self.customer
+        return context

@@ -51,4 +51,4 @@ class PartnerBaseModel(CompanyBaseModel):
         abstract = True
         
     def __str__(self):
-        return f"{self.name} - {self.document}"
+        return f"{self.name} - {self.cpf_cnpj}"
