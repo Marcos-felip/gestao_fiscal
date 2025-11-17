@@ -7,9 +7,19 @@
     {% include 'administration/includes/head.html' %}
     {% block extrahead %}{% endblock extrahead %}
   </head>
-  <body class="{% block body %}{% endblock body %}">
+  <body class="{% block body %}{% endblock body %}" style="overflow-x: hidden;">
     <script src="{% static 'dist/js/demo-theme.min.js' %}?1684106062"></script>
-    <div class="page">
+    <div class="page" style="overflow-x: hidden; max-width: 100%;">
+      <style>
+        .page-wrapper {
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+        .container-xl, .container-fluid {
+          max-width: 100% !important;
+          overflow-x: hidden;
+        }
+      </style>
       <!-- Navbar -->
       {% block navigation %}
         {% include 'administration/includes/navigation.html' %}
@@ -23,6 +33,7 @@
         {% block titlebody %}{% endblock %}
         <!-- Page body -->
         {% block content %}{% endblock content %}
+        {% include 'administration/includes/footer.html' %}
       </div>
     </div>
     <!-- Modals -->

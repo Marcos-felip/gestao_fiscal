@@ -1,6 +1,56 @@
 {% load static  %}
 
-<ul class="navbar-nav pt-lg-3">
+<style>
+/* Escopo específico para sidebar menu */
+.sidebar-custom-menu { padding: 16px 0; }
+.sidebar-custom-menu .nav-item { margin-bottom: 4px; }
+
+/* Links principais */
+.sidebar-custom-menu .nav-link { 
+    padding: 12px 16px; margin: 0 8px; border-radius: 8px; 
+    transition: all 0.2s ease; position: relative; 
+}
+.sidebar-custom-menu .nav-link.active { 
+    background: linear-gradient(135deg, #206bc4 0%, #1a5ba8 100%) !important; 
+    color: white !important; font-weight: 500; 
+    box-shadow: 0 2px 8px rgba(32, 107, 196, 0.3); 
+}
+.sidebar-custom-menu .nav-link.active::before { 
+    content: ''; position: absolute; left: -8px; top: 50%; 
+    transform: translateY(-50%); width: 3px; height: 70%; 
+    background: white; border-radius: 2px; 
+}
+.sidebar-custom-menu .nav-link.active .nav-link-icon svg { color: white !important; }
+
+/* Dropdown */
+.sidebar-custom-menu .dropdown-menu { 
+    background: transparent; border: none; margin: 0; 
+    padding: 4px 0; box-shadow: none; position: static; width: 100%; 
+}
+.sidebar-custom-menu .dropdown-menu .dropdown-menu-columns,
+.sidebar-custom-menu .dropdown-menu .dropdown-menu-column { width: 100%; padding: 0; }
+
+/* Itens dropdown */
+.sidebar-custom-menu .dropdown-item { 
+    margin: 4px 8px; border-radius: 6px; 
+    transition: all 0.2s ease; color: white; font-size: 0.9rem; 
+    width: calc(100% - 16px); box-sizing: border-box; 
+}
+.sidebar-custom-menu .dropdown-item.active { 
+    background: white !important; color: #206bc4 !important; 
+    font-weight: 500; box-shadow: 0 1px 4px rgba(255, 255, 255, 0.2); 
+}
+
+/* Hover effects */
+.sidebar-custom-menu .nav-link:hover:not(.active) { 
+    background-color: rgba(32, 107, 196, 0.1); color: #74c0fc; 
+}
+.sidebar-custom-menu .dropdown-item:hover:not(.active) { 
+    background-color: rgba(32, 107, 196, 0.1); 
+}
+</style>
+
+<ul class="navbar-nav pt-lg-3 sidebar-custom-menu" style="padding-top: 0 !important;">
     <li class="nav-item">
         <a class="nav-link" href="{% url 'configuration:home' %}" >
         <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -12,8 +62,8 @@
         </a>
     </li>
 
-    <li class="nav-item dropdown" {% if request.resolver_match.url_name == 'customer_list' or request.resolver_match.url_name == 'customer_base' %} show {% endif %}>
-        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+    <li class="nav-item dropdown {% if 'customers' in request.path or 'partners' in request.path %} show {% endif %}">
+        <a class="nav-link dropdown-toggle {% if 'customers' in request.path or 'partners' in request.path %} active {% endif %}" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{% if 'customers' in request.path or 'partners' in request.path %}true{% else %}false{% endif %}">
             <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <!-- icon de plus -->
                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-copy-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path stroke="none" d="M0 0h24v24H0z" />
@@ -27,10 +77,10 @@
                 Cadastros
             </span>
         </a>
-        <div class="dropdown-menu {% if request.resolver_match.url_name == 'customer_list' or request.resolver_match.url_name == 'customer_base' %} show {% endif %}">
+        <div class="dropdown-menu {% if 'customers' in request.path or 'partners' in request.path %} show {% endif %}">
             <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
-                    <a class="dropdown-item {% if request.resolver_match.url_name == 'partners:customer_list' %} active {% endif %}" href="{% url 'partners:customer_list' %}">
+                    <a class="dropdown-item {% if 'customers' in request.path %} active {% endif %}" href="{% url 'partners:customer_list' %}">
                         Clientes
                     </a>
                     {% comment %} 
