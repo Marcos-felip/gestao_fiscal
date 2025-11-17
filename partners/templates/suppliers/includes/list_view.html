@@ -1,0 +1,58 @@
+<table class="table table-vcenter table-mobile-md card-table">
+    <thead>
+        <tr>
+            <th>Nome/Razão Social</th>
+            <th>CPF/CNPJ</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Celular</th>
+            <th class="w-1"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for supplier in object_list %}
+            <tr class="supplier-row {% if supplier.is_active %}active-supplier{% else %}inactive-supplier{% endif %}">
+                <td data-label="Nome/Razão Social">
+                    <div class="d-flex py-1 align-items-center">
+                        <span class="avatar avatar-sm me-2 avatar-rounded">
+                            {{ supplier.name|first|upper }}
+                        </span>
+                        <div class="flex-fill">
+                            <div class="font-medium">
+                                {{ supplier.name|default:"" }}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td data-label="CPF/CNPJ">
+                    <div class="text-muted">{{ supplier.cpf_cnpj|default:"" }}</div>
+                </td>
+                <td data-label="Email">
+                    <div class="text-muted">{{ supplier.email|default:"" }}</div>
+                </td>
+                <td data-label="Telefone">
+                    <div class="text-muted">{{ supplier.phone|default:"" }}</div>
+                </td>
+                <td data-label="Celular">
+                    <div class="text-muted">{{ supplier.mobile|default:"" }}</div>
+                </td>
+                <td>
+                    <div class="btn-list flex-nowrap">
+                        <a href="{% url 'partners:supplier_update' pk=supplier.id %}" class="btn btn-ghost-primary btn-icon" data-bs-toggle="tooltip" title="Editar">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                <path d="M16 5l3 3" />
+                            </svg>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">Nenhum fornecedor encontrado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

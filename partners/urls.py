@@ -1,5 +1,5 @@
 from django.urls import path
-from partners.views import customers
+from partners.views import customers, suppliers
 
 app_name = 'partners'
 
@@ -10,4 +10,8 @@ urlpatterns = [
     path('customers/<int:pk>/edit/', customers.CustomerUpdateView.as_view(), name='customer_update'),
     path('customers/<int:pk>/edit/advanced/', customers.CustomerAdvancedUpdateView.as_view(), name='customer_advanced'),
     path('customers/<int:pk>/edit/address/', customers.CustomerAddressUpdateView.as_view(), name='customer_address'),
+
+    path('suppliers/', suppliers.SupplierListView.as_view(), name='supplier_list'),
+    path('suppliers/create/', suppliers.SupplierTemplateView.as_view(), name='supplier_base'),
+    
 ]

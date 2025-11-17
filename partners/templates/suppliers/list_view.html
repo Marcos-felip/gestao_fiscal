@@ -1,0 +1,53 @@
+{% extends "administration/base.html" %}
+
+{% load static %}
+
+{% block title %}Fornecedores - Gestão Fiscal{% endblock title %}
+
+{% block titlebody %}
+<div class="row g-2 align-items-center px-4 mt-3">
+    <div class="col">
+        <h2 class="page-title">Fornecedores</h2>
+    </div>
+</div>
+{% endblock titlebody %}
+
+{% block content %}
+<div class="page-body px-4">
+    <div class="card mb-3">
+        <div class="card-body">
+            <form class="d-flex">
+                <div class="input-icon flex-grow-1 me-3">
+                    <span class="input-icon-addon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Buscar por Nome/Razão Social ou CPF/CNPJ">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Fornecedores</h3>
+            <div class="card-actions">
+                <a href="#" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 5l0 14" />
+                        <path d="M5 12l14 0" />
+                    </svg>
+                    Novo Fornecedor
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive" id="customers-table">
+            {% include "suppliers/includes/list_view.html" %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
