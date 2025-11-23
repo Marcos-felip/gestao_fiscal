@@ -3,6 +3,7 @@ from partners.models.customers import Customer
 from core.models.address import Address
 from partners.forms.customers import CustomerAddressForm, CustomerAdvancedForm, CustomerBasicForm
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 
 class CustomerListView(ListView):
@@ -11,12 +12,35 @@ class CustomerListView(ListView):
     """
     model = Customer
     template_name = 'customers/list_view.html'
+    partial_template_name = 'customers/includes/list_view.html'
     paginate_by = 20
 
     def get_queryset(self):
         company = self.request.user.company_active
         queryset = Customer.objects.filter(company=company)
+
+        # Aplicar filtros
+        search = self.request.GET.get('search', '')
+        
+        # Busca por nome, nome fantasia ou CPF/CNPJ
+        if search:
+            queryset = queryset.filter(
+                Q(name__icontains=search) |
+                Q(trading_name__icontains=search) |
+                Q(cpf_cnpj__icontains=search)
+            )
+            
         return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_search'] = self.request.GET.get('search', '')
+        return context
+    
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.headers.get('Hx-Request'):
+            self.template_name = self.partial_template_name
+        return super().render_to_response(context, **response_kwargs)
 
 
 class CustomerTemplateView(TemplateView):

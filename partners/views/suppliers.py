@@ -2,6 +2,7 @@ from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 from partners.forms.suppliers import SupplierAddressForm, SupplierAdvancedForm, SupplierBasicForm
 from partners.models.suppliers import Supplier
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 
 class SupplierListView(ListView):
@@ -10,13 +11,35 @@ class SupplierListView(ListView):
     """
     model = Supplier
     template_name = 'suppliers/list_view.html'
+    partial_template_name = 'suppliers/includes/list_view.html'
     paginate_by = 20
 
+    def get_queryset(self):
+        company = self.request.user.company_active
+        queryset = Supplier.objects.filter(company=company)
+
+        # Aplicar filtros
+        search = self.request.GET.get('search', '')
+        
+        # Busca por nome, nome fantasia ou CPF/CNPJ
+        if search:
+            queryset = queryset.filter(
+                Q(name__icontains=search) |
+                Q(trading_name__icontains=search) |
+                Q(cpf_cnpj__icontains=search)
+            )
+            
+        return queryset
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        company = self.request.user.company_active
-        context['suppliers'] = company.suppliers.filter(company=company)
+        context['current_search'] = self.request.GET.get('search', '')
         return context
+    
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.headers.get('Hx-Request'):
+            self.template_name = self.partial_template_name
+        return super().render_to_response(context, **response_kwargs)
 
 
 class SupplierTemplateView(TemplateView):
