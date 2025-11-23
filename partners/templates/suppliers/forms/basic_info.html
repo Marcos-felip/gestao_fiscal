@@ -1,0 +1,60 @@
+{% extends "suppliers/layouts/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %}Criar Fornecedor - Gestão Fiscal{% endblock title %}
+
+{% block titlebody %}
+<div class="container-xl mt-3">
+    <div class="row g-2 align-items-center">
+        <div class="col">
+            <h2 class="page-title">Fornecedor</h2>
+        </div>
+    </div>
+</div>
+{% endblock titlebody %}
+
+{% block card_content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    {{form.media}}
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+</form>
+{% endblock card_content %}
+
+{% block extrajs %}
+<script>
+
+    /* Função para ocultar ou mostrar campos com base no tipo de pessoa
+    */
+
+    function togglePersonType() {
+        let personType = $('#id_person_type').val();
+        if (personType === 'PJ') {
+            $('#id_cnpj').closest('.mb-3').show();
+            $('#id_trading_name').closest('.mb-3').show();
+            $('#id_cpf').closest('.mb-3').hide();
+        } else if (personType === 'PF') {
+            $('#id_cnpj').closest('.mb-3').hide();
+            $('#id_trading_name').closest('.mb-3').hide();
+            $('#id_cpf').closest('.mb-3').show();
+        }
+    }
+
+    togglePersonType();
+
+    $('#id_person_type').change(function() {
+        togglePersonType();
+    });
+
+    $('#id_cpf').mask('000.000.000-00');
+    $('#id_cnpj').mask('00.000.000/0000-00');
+    $('#id_cellphone').mask('(00) 00000-0000');
+
+</script>
+{% endblock extrajs %}

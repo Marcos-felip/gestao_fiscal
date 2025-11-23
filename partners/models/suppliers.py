@@ -9,6 +9,7 @@ class Supplier(PartnerBaseModel):
     bank_account = models.CharField(max_length=20, blank=True, null=True, verbose_name='Conta')
     bank_pix = models.CharField(max_length=100, blank=True, null=True, verbose_name='Chave PIX')
     payment_terms = models.CharField(max_length=255, blank=True, null=True, verbose_name='Condições de Pagamento')
+    credit_limit = models.DecimalField(max_digits=15, decimal_places=2, default=0, verbose_name='Limite de Crédito')
     
     class Meta:
         verbose_name = 'Fornecedor'

@@ -13,5 +13,9 @@ urlpatterns = [
 
     path('suppliers/', suppliers.SupplierListView.as_view(), name='supplier_list'),
     path('suppliers/create/', suppliers.SupplierTemplateView.as_view(), name='supplier_base'),
+    path('suppliers/create/basic/', suppliers.SupplierBasicCreateView.as_view(), name='supplier_create_basic'),
+    path('suppliers/<int:pk>/edit/', suppliers.SupplierUpdateView.as_view(), name='supplier_update'),
+    path('suppliers/<int:pk>/edit/advanced/', suppliers.SupplierAdvancedUpdateView.as_view(), name='supplier_advanced'),
+    path('suppliers/<int:pk>/edit/address/', suppliers.SupplierAddressUpdateView.as_view(), name='supplier_address'),
     
 ]
