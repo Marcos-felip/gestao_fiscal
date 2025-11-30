@@ -25,4 +25,5 @@ urlpatterns = [
     path('accounts/profile/', include('accounts.urls')),
     path('', include('configuration.urls')),
     path('', include('partners.urls')),
+    path('', include('inventory.urls')),
 ] + debug_toolbar_urls()
