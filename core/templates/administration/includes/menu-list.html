@@ -62,8 +62,8 @@
         </a>
     </li>
 
-    <li class="nav-item dropdown {% if 'partners' in request.path or 'customers' in request.path or 'suppliers' in request.path or 'categories' in request.path %} show {% endif %}">
-        <a class="nav-link dropdown-toggle {% if 'customers' in request.path or 'partners' in request.path or 'suppliers' in request.path or 'categories' in request.path %} active {% endif %}" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{% if 'partners' in request.path or 'customers' in request.path or 'suppliers' in request.path or 'categories' in request.path %}true{% else %}false{% endif %}">
+    <li class="nav-item dropdown {% if 'partners' in request.path or 'customers' in request.path or 'suppliers' in request.path or 'categories' in request.path or 'units' in request.path %} show {% endif %}">
+        <a class="nav-link dropdown-toggle {% if 'customers' in request.path or 'partners' in request.path or 'suppliers' in request.path or 'categories' in request.path or 'units' in request.path %} active {% endif %}" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{% if 'partners' in request.path or 'customers' in request.path or 'suppliers' in request.path or 'categories' in request.path or 'units' in request.path %}true{% else %}false{% endif %}">
             <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <!-- icon de plus -->
                 <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-copy-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path stroke="none" d="M0 0h24v24H0z" />
@@ -77,7 +77,7 @@
                 Cadastros
             </span>
         </a>
-        <div class="dropdown-menu {% if 'partners' in request.path or 'customers' in request.path or 'suppliers' in request.path or 'categories' in request.path %} show {% endif %}">
+        <div class="dropdown-menu {% if 'partners' in request.path or 'customers' in request.path or 'suppliers' in request.path or 'categories' in request.path or 'units' in request.path %} show {% endif %}">
             <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
                     <a class="dropdown-item {% if 'customers' in request.path %} active {% endif %}" href="{% url 'partners:customer_list' %}">
@@ -88,6 +88,9 @@
                     </a>
                     <a class="dropdown-item {% if 'categories' in request.path %} active {% endif %}" href="{% url 'inventory:category_list' %}">
                         Categoria de Produtos
+                    </a>
+                    <a class="dropdown-item {% if 'units' in request.path %} active {% endif %}" href="{% url 'inventory:unit_list' %}">
+                        Unidades de Medida
                     </a>
                     {% comment %} 
                     <div class="dropend">

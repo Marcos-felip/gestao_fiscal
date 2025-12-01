@@ -1,7 +1,8 @@
 from django.db import models
+from core.models.company import CompanyBaseModel
 
 
-class Unit(models.Model):
+class Unit(CompanyBaseModel):
     """
     Modelo para representar unidades de medida de produtos.
     """
