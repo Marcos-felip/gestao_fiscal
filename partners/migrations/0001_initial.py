@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('accounts', '0006_alter_establishment_environment_default'),
+        ('core', '0001_initial'),
     ]
 
     operations = [
@@ -35,7 +36,7 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('credit_limit', models.DecimalField(decimal_places=2, default=0, max_digits=15, verbose_name='Limite de Crédito')),
                 ('is_exempt', models.BooleanField(default=False, verbose_name='Isento de Impostos')),
-                ('address', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='%(class)ss', to='accounts.address')),
+                ('address', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='%(class)ss', to='core.address')),
                 ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)ss', to='accounts.company')),
             ],
             options={
@@ -71,7 +72,7 @@ class Migration(migrations.Migration):
                 ('bank_account', models.CharField(blank=True, max_length=20, null=True, verbose_name='Conta')),
                 ('bank_pix', models.CharField(blank=True, max_length=100, null=True, verbose_name='Chave PIX')),
                 ('payment_terms', models.CharField(blank=True, max_length=255, null=True, verbose_name='Condições de Pagamento')),
-                ('address', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='%(class)ss', to='accounts.address')),
+                ('address', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='%(class)ss', to='core.address')),
                 ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='%(class)ss', to='accounts.company')),
             ],
             options={
