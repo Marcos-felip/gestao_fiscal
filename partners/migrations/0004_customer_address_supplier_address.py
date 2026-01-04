@@ -8,6 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('accounts', '0008_establishment_address'),
+        ('core', '0001_initial'),
         ('partners', '0003_remove_customer_address_remove_supplier_address'),
     ]
 
@@ -15,11 +16,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='customer',
             name='address',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='%(class)ss', to='accounts.address'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='%(class)ss', to='core.address'),
         ),
         migrations.AddField(
             model_name='supplier',
             name='address',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='%(class)ss', to='accounts.address'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='%(class)ss', to='core.address'),
         ),
     ]
