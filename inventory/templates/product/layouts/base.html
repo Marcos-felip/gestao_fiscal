@@ -1,0 +1,80 @@
+{% extends "administration/base.html" %}
+
+{% load static %}
+
+{% block title %} Produtos - Gestão Fiscal {% endblock title %}
+
+{% block titlebody %}
+<div class="container-xl mt-3">
+    <div class="row g-2 align-items-center">
+        <div class="col">
+            <h2 class="page-title">Produtos</h2>
+        </div>
+    </div>
+</div>
+{% endblock titlebody %}
+
+{% block content %}
+<div class="container-xl mt-3">
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" style="padding: 0;" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a href="
+                        {% if not object.pk %}
+                            {% url 'inventory:product_create' %}
+                        {% else %}
+                            {% url 'inventory:product_update' pk=object.pk %}
+                        {% endif %}" 
+                        class="nav-link"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-package me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+                            <path d="M12 12l8 -4.5" />
+                            <path d="M12 12l0 9" />
+                            <path d="M12 12l-8 -4.5" />
+                            <path d="M16 5.25l-8 4.5" />
+                        </svg>
+                        Dados do Produto
+                    </a>
+                </li>
+                {% if object.pk %}
+                    <li class="nav-item" role="presentation">
+                        <a href="{% url 'inventory:product_tax' pk=object.pk %}" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
+                                <path d="M9 7l6 0" />
+                                <path d="M9 11l6 0" />
+                                <path d="M9 15l6 0" />
+                            </svg>
+                            Dados Fiscais
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item" role="presentation">
+                        <a href="#" class="nav-link disabled">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
+                                <path d="M9 7l6 0" />
+                                <path d="M9 11l6 0" />
+                                <path d="M9 15l6 0" />
+                            </svg>
+                            Dados Fiscais
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content">
+                <div class="tab-pane active show">
+                    {% block card_content %}{% endblock card_content %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -33,3 +33,5 @@ class Supplier(PartnerBaseModel):
                 name='unique_supplier_cpf_cnpj_per_company'
             )
         ]
+    def __str__(self):
+        return self.name

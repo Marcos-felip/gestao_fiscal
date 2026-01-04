@@ -1,0 +1,67 @@
+{% extends "administration/base.html" %}
+
+{% load static %}
+
+{% block title %}Produtos - Gestão Fiscal{% endblock title %}
+
+{% block titlebody %}
+<div class="row g-2 align-items-center px-4 mt-3">
+    <div class="col">
+        <h2 class="page-title">
+            Produtos do Sistema
+        </h2>
+    </div>
+</div>
+{% endblock titlebody %}
+
+{% block content %}
+<div class="page-body px-4">
+    <div class="card mb-3">
+        <div class="card-body">
+            <form 
+                class="d-flex" 
+                hx-get="{% url 'inventory:product_list' %}" 
+                hx-target="#products-table" 
+                hx-trigger="change from:.filter-control, submit" 
+                hx-swap="innerHTML"
+                hx-push-url="true"
+            >
+                <div class="input-icon flex-grow-1 me-3">
+                    <span class="input-icon-addon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                    </span>
+                    <input type="text" class="form-control filter-control" placeholder="Buscar por nome, SKU ou código de barras" name="search" value="{{ current_search }}">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+                    Buscar
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Produtos</h3>
+            <div class="card-actions">
+                <a href="{% url 'inventory:product_create' %}" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                    Novo Produto
+                </a>
+            </div>
+        </div>
+        <div class="table-responsive" id="products-table">
+            {% include "product/includes/list_view.html" %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação de Desativação -->
+{% for product in object_list %}
+    <div class="modal fade" id="deleteModal-{{ product.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ product.pk }}" aria-hidden="true">
+        <div class="modal-dialog">
+            {% include "product/includes/delete_view.html" with object=product %}
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock content %}

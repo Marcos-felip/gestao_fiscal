@@ -1,0 +1,94 @@
+<table class="table table-vcenter table-mobile-md card-table">
+    <thead>
+        <tr>
+            <th>Nome do Produto</th>
+            <th>Categoria</th>
+            <th>Unidade</th>
+            <th>Fornecedor</th>
+            <th>Preço de Venda</th>
+            <th>Estoque</th>
+            <th class="w-1"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in object_list %}
+            <tr class="product-row">
+                <td data-label="Nome do Produto">
+                    <div class="d-flex py-1 align-items-center">
+                        <div class="flex-fill">
+                            <div class="font-medium">
+                                {{ product.name|default:"" }}
+                            </div>
+                            {% if product.sku %}
+                            <div class="text-muted small">SKU: {{ product.sku }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
+                <td data-label="Categoria">
+                    <div class="text-muted">{{ product.category.name|default:"" }}</div>
+                </td>
+                <td data-label="Unidade">
+                    <div class="text-muted">{{ product.unit.abbreviation|default:"" }}</div>
+                </td>
+                <td data-label="Fornecedor">
+                    <div class="text-muted">{{ product.supplier.name|default:"" }}</div>
+                </td>
+                <td data-label="Preço de Venda">
+                    <div class="text-muted">R$ {{ product.sale_price|floatformat:2 }}</div>
+                </td>
+                <td data-label="Estoque">
+                    <div class="text-muted">{{ product.stock_quantity }}</div>
+                </td>
+                <td>
+                    <div class="btn-list flex-nowrap">
+                        <a href="{% url 'inventory:product_update' pk=product.id %}" class="btn btn-ghost-primary btn-icon" data-bs-toggle="tooltip" title="Editar">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                <path d="M16 5l3 3" />
+                            </svg>
+                        </a>
+                        <a href="{% url 'inventory:product_tax' pk=product.id %}" class="btn btn-ghost-info btn-icon" data-bs-toggle="tooltip" title="Dados Fiscais">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
+                                <path d="M9 7l6 0" />
+                                <path d="M9 11l6 0" />
+                                <path d="M9 15l6 0" />
+                            </svg>
+                        </a>
+                        <div class="dropdown">
+                            <button class="btn btn-ghost-secondary btn-icon" data-bs-toggle="dropdown" aria-label="Ações" title="Ações">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-dots-vertical" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                    <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                    <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-card">
+                                <button class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ product.pk }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M4 7l16 0" />
+                                        <path d="M10 11l0 6" />
+                                        <path d="M14 11l0 6" />
+                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                        <path d="M9 7l0 -3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1l0 3" />
+                                    </svg>
+                                    Deletar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">Nenhum produto encontrado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

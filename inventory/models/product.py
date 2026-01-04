@@ -2,6 +2,7 @@ from django.db import models
 from core.models.company import CompanyBaseModel
 from inventory.models.category import Category
 from inventory.models.units import Unit
+from partners.models.suppliers import Supplier
 
 
 class ProductFiscalData(CompanyBaseModel):
@@ -48,6 +49,7 @@ class Product(CompanyBaseModel):
     # Comercial
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
     unit = models.ForeignKey(Unit, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
+    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True, blank=True, related_name='products', verbose_name='Fornecedor')
     sku = models.CharField(max_length=50, blank=True, null=True, verbose_name='SKU')
     barcode = models.CharField(max_length=20, blank=True, null=True, verbose_name='Código de Barras')
 
