@@ -15,7 +15,7 @@ class UserListView(ListView):
     
     def get_queryset(self):
         company = self.request.user.company_active
-        queryset = Membership.objects.filter(company=company)
+        queryset = Membership.objects.filter(company=company).select_related('user')
         
         # Aplicar filtros
         status = self.request.GET.get('status', 'all')
@@ -39,10 +39,57 @@ class UserListView(ListView):
             
         return queryset
     
+    def get_table_config(self):
+        """
+            Configuração da tabela de usuários.
+        """
+        return {
+            'card_title': 'Usuários',
+            'card_actions': [
+                {
+                    'label': 'Novo Usuário',
+                    'url': reverse_lazy('configuration:user_create'),
+                    'icon': '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>',
+                    'variant': 'primary'
+                }
+            ],
+            'table_id': 'users-table',
+            'headers': [
+                {
+                    'label': 'Nome',
+                    'field': 'user.first_name',
+                    'template': 'users/components/user_table_cells.html',
+                    'cell_type': 'name'
+                },
+                {
+                    'label': 'Email',
+                    'field': 'user.email',
+                    'template': 'users/components/user_table_cells.html',
+                    'cell_type': 'email'
+                },
+                {
+                    'label': 'Perfil',
+                    'field': 'role',
+                    'template': 'users/components/user_table_cells.html',
+                    'cell_type': 'role'
+                },
+                {
+                    'label': 'Status',
+                    'field': 'is_active',
+                    'template': 'users/components/user_table_cells.html',
+                    'cell_type': 'status'
+                },
+            ],
+            'actions_template': 'users/components/user_table_cells.html',
+            'actions_cell_type': 'actions',
+            'empty_message': 'Nenhum usuário encontrado.',
+        }
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_status'] = self.request.GET.get('status', 'all')
         context['current_search'] = self.request.GET.get('search', '')
+        context['table_config'] = self.get_table_config()
         return context
     
     def render_to_response(self, context, **response_kwargs):

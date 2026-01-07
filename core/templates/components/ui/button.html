@@ -1,0 +1,42 @@
+{% load components %}
+
+{# Componente de Botão Reutilizável #}
+{% comment %}
+Parâmetros:
+- label: Texto do botão (obrigatório)
+- variant: Estilo do botão (primary, secondary, success, danger, warning, info, ghost-primary, ghost-secondary, outline-primary, etc.)
+- size: Tamanho (sm, md, lg) - opcional
+- type: Tipo do botão (button, submit, reset) - padrão: button
+- icon: SVG do ícone (opcional)
+- icon_only: True para botão apenas com ícone (adiciona classe btn-icon)
+- href: URL para links <a> - se fornecido, renderiza link em vez de botão
+- extra_classes: Classes CSS adicionais - opcional
+- attrs: Atributos HTML extras como dict (data-bs-toggle, data-bs-target, etc.)
+- disabled: True para desabilitar o botão
+
+Uso:
+{% render_button label="Salvar" variant="primary" icon="<svg>...</svg>" %}
+{% render_button label="Editar" variant="ghost-primary" icon_only=True href="/edit/1" %}
+{% endcomment %}
+
+{% if href %}
+    <a href="{{ href }}" 
+       class="btn btn-{{ variant|default:'primary' }}{% if size %} btn-{{ size }}{% endif %}{% if icon_only %} btn-icon{% endif %}{% if extra_classes %} {{ extra_classes }}{% endif %}"
+       {% if attrs %}
+           {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}
+       {% endif %}
+       {% if disabled %}aria-disabled="true"{% endif %}>
+        {% if icon %}{{ icon|safe }}{% endif %}
+        {% if not icon_only %}{{ label }}{% endif %}
+    </a>
+{% else %}
+    <button type="{{ type|default:'button' }}" 
+            class="btn btn-{{ variant|default:'primary' }}{% if size %} btn-{{ size }}{% endif %}{% if icon_only %} btn-icon{% endif %}{% if extra_classes %} {{ extra_classes }}{% endif %}"
+            {% if attrs %}
+                {% for key, value in attrs.items %}{{ key }}="{{ value }}" {% endfor %}
+            {% endif %}
+            {% if disabled %}disabled{% endif %}>
+        {% if icon %}{{ icon|safe }}{% endif %}
+        {% if not icon_only %}{{ label }}{% endif %}
+    </button>
+{% endif %}
