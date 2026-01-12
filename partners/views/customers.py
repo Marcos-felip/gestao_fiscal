@@ -11,8 +11,8 @@ class CustomerListView(ListView):
         View para listar clientes da Empresa.
     """
     model = Customer
-    template_name = 'customers/list_view.html'
-    partial_template_name = 'customers/includes/list_view.html'
+    template_name = 'customers/shadcn_list.html'
+    partial_template_name = 'customers/partials/customer_table.html'
     paginate_by = 20
 
     def get_queryset(self):
@@ -61,7 +61,7 @@ class CustomerBasicCreateView(CreateView):
     """
     model = Customer
     form_class = CustomerBasicForm
-    template_name = 'customers/forms/basic_info.html'
+    template_name = 'customers/shadcn_basic_form.html'
 
     def get_success_url(self):
         return reverse_lazy('partners:customer_advanced', kwargs={'pk': self.object.pk})
@@ -75,6 +75,11 @@ class CustomerBasicCreateView(CreateView):
         form.instance.company = self.request.user.company_active
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tab'] = 'basic'
+        return context
+
 
 class CustomerUpdateView(UpdateView):
     """
@@ -82,13 +87,18 @@ class CustomerUpdateView(UpdateView):
     """
     model = Customer
     form_class = CustomerBasicForm
-    template_name = 'customers/forms/basic_info.html'
+    template_name = 'customers/shadcn_basic_form.html'
     success_url = reverse_lazy('partners:customer_list')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['company'] = self.request.user.company_active
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tab'] = 'basic'
+        return context
 
 
 class CustomerAdvancedUpdateView(UpdateView):
@@ -97,7 +107,7 @@ class CustomerAdvancedUpdateView(UpdateView):
     """
     model = Customer
     form_class = CustomerAdvancedForm
-    template_name = 'customers/forms/advanced_info.html'
+    template_name = 'customers/shadcn_advanced_form.html'
 
     def get_success_url(self):
         return reverse_lazy('partners:customer_advanced', kwargs={'pk': self.object.pk})
@@ -107,6 +117,11 @@ class CustomerAdvancedUpdateView(UpdateView):
         kwargs['company'] = self.request.user.company_active
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tab'] = 'advanced'
+        return context
+
 
 class CustomerAddressUpdateView(UpdateView):
     """
@@ -114,7 +129,7 @@ class CustomerAddressUpdateView(UpdateView):
     """
     model = Customer
     form_class = CustomerAddressForm
-    template_name = 'customers/forms/address.html'
+    template_name = 'customers/shadcn_address_form.html'
 
     def get_success_url(self):
         return reverse_lazy('partners:customer_address', kwargs={'pk': self.object.pk})
@@ -139,4 +154,5 @@ class CustomerAddressUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['object'] = self.customer
+        context['active_tab'] = 'address'
         return context

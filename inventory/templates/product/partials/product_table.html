@@ -1,0 +1,150 @@
+{% load static %}
+
+<c-card>
+    <c-card.header>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <c-card.title>Lista de Produtos</c-card.title>
+                <c-badge variant="secondary">{{ page_obj.paginator.count }} registro(s)</c-badge>
+            </div>
+            <a href="{% url 'inventory:product_create' %}">
+                <c-button variant="default">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 5l0 14" />
+                        <path d="M5 12l14 0" />
+                    </svg>
+                    Novo Produto
+                </c-button>
+            </a>
+        </div>
+    </c-card.header>
+    <c-card.content>
+        <c-table>
+            <c-table.header>
+                <c-table.row>
+                    <c-table.head>Nome do Produto</c-table.head>
+                    <c-table.head>Categoria</c-table.head>
+                    <c-table.head>Unidade</c-table.head>
+                    <c-table.head>Fornecedor</c-table.head>
+                    <c-table.head>Preço de Venda</c-table.head>
+                    <c-table.head>Estoque</c-table.head>
+                    <c-table.head class="text-right">Ações</c-table.head>
+                </c-table.row>
+            </c-table.header>
+            <c-table.body>
+                {% for product in object_list %}
+                <c-table.row>
+                    <c-table.cell class="font-medium">
+                        <div>{{ product.name }}</div>
+                        {% if product.sku %}
+                        <div class="text-xs text-muted-foreground">SKU: {{ product.sku }}</div>
+                        {% endif %}
+                    </c-table.cell>
+                    <c-table.cell>
+                        {{ product.category.name|default:"-" }}
+                    </c-table.cell>
+                    <c-table.cell>
+                        {{ product.unit.abbreviation|default:"-" }}
+                    </c-table.cell>
+                    <c-table.cell>
+                        {{ product.supplier.name|default:"-" }}
+                    </c-table.cell>
+                    <c-table.cell>
+                        R$ {{ product.sale_price|floatformat:2 }}
+                    </c-table.cell>
+                    <c-table.cell>
+                        {% if product.stock_quantity <= 0 %}
+                        <c-badge variant="destructive">{{ product.stock_quantity }}</c-badge>
+                        {% elif product.stock_quantity < 10 %}
+                        <c-badge variant="secondary">{{ product.stock_quantity }}</c-badge>
+                        {% else %}
+                        <c-badge variant="default">{{ product.stock_quantity }}</c-badge>
+                        {% endif %}
+                    </c-table.cell>
+                    <c-table.cell class="text-right">
+                        <div class="flex justify-end gap-2">
+                            <a href="{% url 'inventory:product_update' pk=product.id %}">
+                                <c-button variant="outline" size="sm" title="Editar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </c-button>
+                            </a>
+                            <a href="{% url 'inventory:product_tax' pk=product.id %}">
+                                <c-button variant="outline" size="sm" title="Dados Fiscais">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
+                                        <path d="M9 7l6 0" />
+                                        <path d="M9 11l6 0" />
+                                        <path d="M9 15l6 0" />
+                                    </svg>
+                                </c-button>
+                            </a>
+                            <c-button 
+                                variant="destructive" 
+                                size="sm"
+                                hx-delete="{% url 'inventory:product_delete' pk=product.id %}"
+                                hx-confirm="Tem certeza que deseja desativar este produto?"
+                                hx-target="#products-table-container"
+                                hx-swap="innerHTML"
+                                title="Desativar"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M4 7l16 0" />
+                                    <path d="M10 11l0 6" />
+                                    <path d="M14 11l0 6" />
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </c-button>
+                        </div>
+                    </c-table.cell>
+                </c-table.row>
+                {% empty %}
+                <c-table.row>
+                    <c-table.cell colspan="7" class="text-center py-8 text-muted-foreground">
+                        Nenhum produto encontrado
+                    </c-table.cell>
+                </c-table.row>
+                {% endfor %}
+            </c-table.body>
+        </c-table>
+    </c-card.content>
+    {% if page_obj.has_other_pages %}
+    <c-card.footer class="flex justify-center gap-2">
+        {% if page_obj.has_previous %}
+        <c-button 
+            variant="outline" 
+            size="sm"
+            hx-get="{% url 'inventory:product_list' %}?page={{ page_obj.previous_page_number }}{% if current_search %}&search={{ current_search }}{% endif %}"
+            hx-target="#products-table-container"
+            hx-swap="innerHTML"
+        >
+            Anterior
+        </c-button>
+        {% endif %}
+        
+        <span class="flex items-center px-3 text-sm text-muted-foreground">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+        
+        {% if page_obj.has_next %}
+        <c-button 
+            variant="outline" 
+            size="sm"
+            hx-get="{% url 'inventory:product_list' %}?page={{ page_obj.next_page_number }}{% if current_search %}&search={{ current_search }}{% endif %}"
+            hx-target="#products-table-container"
+            hx-swap="innerHTML"
+        >
+            Próximo
+        </c-button>
+        {% endif %}
+    </c-card.footer>
+    {% endif %}
+</c-card>

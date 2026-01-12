@@ -11,8 +11,8 @@ class ProductListView(ListView):
         View para listar produtos da Empresa.
     """
     model = Product
-    template_name = 'product/list_view.html'
-    partial_template_name = 'product/includes/list_view.html'
+    template_name = 'product/shadcn_list.html'
+    partial_template_name = 'product/partials/product_table.html'
     paginate_by = 20
 
     def get_queryset(self):
@@ -61,7 +61,12 @@ class ProductDataCreateView(CreateView):
     """
     model = Product
     form_class = ProductDataForm
-    template_name = 'product/forms/product_data.html'
+    template_name = 'product/shadcn_data_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tab'] = 'data'
+        return context
 
     def get_success_url(self):
         return reverse_lazy('inventory:product_tax', kwargs={'pk': self.object.pk})
@@ -82,8 +87,13 @@ class ProductDataUpdateView(UpdateView):
     """
     model = Product
     form_class = ProductDataForm
-    template_name = 'product/forms/product_data.html'
+    template_name = 'product/shadcn_data_form.html'
     success_url = reverse_lazy('inventory:product_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tab'] = 'data'
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -97,7 +107,7 @@ class ProductTaxUpdateView(UpdateView):
     """
     model = Product
     form_class = ProductTaxForm
-    template_name = 'product/forms/tax_data.html'
+    template_name = 'product/shadcn_tax_form.html'
 
     def get_success_url(self):
         return reverse_lazy('inventory:product_tax', kwargs={'pk': self.object.pk})
@@ -118,6 +128,7 @@ class ProductTaxUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['object'] = self.product
+        context['active_tab'] = 'tax'
         return context
 
 

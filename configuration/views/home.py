@@ -4,4 +4,4 @@ from django.shortcuts import render
 
 
 class HomeView(LoginRequiredMixin, TemplateView):
-    template_name = 'home.html'
+    template_name = 'shadcn_home.html'

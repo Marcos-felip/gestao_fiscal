@@ -1,0 +1,93 @@
+{% extends "administration/base.html" %}
+
+{% load static %}
+
+{% block title %}Clientes - Gestão Fiscal{% endblock title %}
+
+{% block titlebody %}
+<div class="px-6 py-4">
+    <nav class="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+        <a href="{% url 'partners:customer_list' %}" class="hover:text-foreground transition-colors">
+            Clientes
+        </a>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M9 6l6 6l-6 6" />
+        </svg>
+        <span class="text-foreground">{% if object.pk %}Editar{% else %}Novo{% endif %}</span>
+    </nav>
+    <h2 class="text-2xl font-semibold tracking-tight">
+        {% if object.pk %}Editar Cliente{% else %}Novo Cliente{% endif %}
+    </h2>
+</div>
+{% endblock titlebody %}
+
+{% block content %}
+<div class="px-6 pb-6">
+    <c-card>
+        <!-- Tabs de navegação -->
+        <c-card.header class="border-b">
+            <div class="flex gap-4" x-data="{ activeTab: '{{ active_tab|default:'basic' }}' }">
+                <a 
+                    href="{% if object.pk %}{% url 'partners:customer_update' pk=object.pk %}{% else %}{% url 'partners:customer_create_basic' %}{% endif %}"
+                    class="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-t-lg transition-colors border-b-2 {% if active_tab == 'basic' or not active_tab %}border-primary text-primary{% else %}border-transparent text-muted-foreground hover:text-foreground{% endif %}"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M12 8l.01 0" />
+                        <path d="M11 12h1v4h1" />
+                    </svg>
+                    Informações Básicas
+                </a>
+                
+                {% if object.pk %}
+                <a 
+                    href="{% url 'partners:customer_advanced' pk=object.pk %}"
+                    class="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-t-lg transition-colors border-b-2 {% if active_tab == 'advanced' %}border-primary text-primary{% else %}border-transparent text-muted-foreground hover:text-foreground{% endif %}"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+                        <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                    </svg>
+                    Informações Avançadas
+                </a>
+                <a 
+                    href="{% url 'partners:customer_address' pk=object.pk %}"
+                    class="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-t-lg transition-colors border-b-2 {% if active_tab == 'address' %}border-primary text-primary{% else %}border-transparent text-muted-foreground hover:text-foreground{% endif %}"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 11m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                        <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+                    </svg>
+                    Endereço
+                </a>
+                {% else %}
+                <span class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted-foreground/50 cursor-not-allowed">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" />
+                        <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                    </svg>
+                    Informações Avançadas
+                </span>
+                <span class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted-foreground/50 cursor-not-allowed">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 11m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                        <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+                    </svg>
+                    Endereço
+                </span>
+                {% endif %}
+            </div>
+        </c-card.header>
+        
+        <c-card.content class="pt-6">
+            {% block form_content %}{% endblock form_content %}
+        </c-card.content>
+    </c-card>
+</div>
+{% endblock content %}

@@ -1,44 +1,39 @@
 {% load static  %}
 
-<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-br" class="antialiased">
   <head>
     <title>{% block title %}{% endblock title %}</title>
     {% block extrastyle %}{% endblock extrastyle %}
     {% include 'administration/includes/head.html' %}
     {% block extrahead %}{% endblock extrahead %}
   </head>
-  <body class="{% block body %}{% endblock body %}" style="overflow-x: hidden;">
-    <script src="{% static 'dist/js/demo-theme.min.js' %}?1684106062"></script>
-    <div class="page" style="overflow-x: hidden; max-width: 100%;">
-      <style>
-        .page-wrapper {
-          max-width: 100%;
-          overflow-x: hidden;
-        }
-        .container-xl, .container-fluid {
-          max-width: 100% !important;
-          overflow-x: hidden;
-        }
-      </style>
-      <!-- Navbar -->
-      {% block navigation %}
-        {% include 'administration/includes/navigation.html' %}
-      {% endblock navigation %}
+  <body class="bg-background text-foreground min-h-screen {% block body %}{% endblock body %}">
+    <div class="flex min-h-screen w-full">
       <!-- Sidebar -->
       {% block sidebar %}
-        {% include 'administration/includes/sidebar.html' %}
+        {% include 'administration/includes/sidebar_tailwind.html' %}
       {% endblock sidebar %}
-      <div class="page-wrapper">
-        <!-- Page header -->
-        {% block titlebody %}{% endblock %}
-        <!-- Page body -->
-        {% block content %}{% endblock content %}
-        {% include 'administration/includes/footer.html' %}
+      
+      <div class="flex-1 flex flex-col">
+        <!-- Navbar -->
+        {% block navigation %}
+          {% include 'administration/includes/navigation_tailwind.html' %}
+        {% endblock navigation %}
+        
+        <main class="flex-1 overflow-auto">
+          <!-- Page header -->
+          {% block titlebody %}{% endblock %}
+          <!-- Page body -->
+          {% block content %}{% endblock content %}
+        </main>
+        
+        {% include 'administration/includes/footer_tailwind.html' %}
       </div>
     </div>
     <!-- Modals -->
     {% block modal %}{% endblock modal %}
-    <!-- Tabler Core -->
+    <!-- Scripts -->
     {% block scripts %}
         {% include 'administration/includes/scripts.html' %}
     {% endblock scripts %}

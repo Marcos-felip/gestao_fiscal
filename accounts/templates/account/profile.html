@@ -1,0 +1,112 @@
+{% extends "administration/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Meu Perfil - Gestão Fiscal{% endblock title %}
+
+{% block titlebody %}
+<div class="flex items-center px-6 py-4">
+    <h2 class="text-2xl font-semibold tracking-tight">Meu Perfil</h2>
+</div>
+{% endblock titlebody %}
+
+{% block content %}
+<div class="px-6 pb-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- Sidebar de Navegação -->
+        <div class="md:col-span-1">
+            <c-card>
+                <c-card.content class="p-4">
+                    <nav class="space-y-1">
+                        <a 
+                            href="{% url 'accounts:profile' %}" 
+                            class="flex items-center px-3 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                            </svg>
+                            Minha Conta
+                        </a>
+                    </nav>
+                </c-card.content>
+            </c-card>
+        </div>
+        
+        <!-- Conteúdo Principal -->
+        <div class="md:col-span-3">
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Card de Avatar -->
+                <c-card class="mb-6">
+                    <c-card.header>
+                        <c-card.title>Foto de Perfil</c-card.title>
+                        <c-card.description>Personalize sua imagem de perfil</c-card.description>
+                    </c-card.header>
+                    <c-card.content>
+                        <div class="flex items-center gap-4">
+                            <div class="h-20 w-20 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+                                <img src="{% static 'static/avatars/000m.jpg' %}" alt="Avatar" class="h-full w-full object-cover">
+                            </div>
+                            <div class="flex gap-2">
+                                <c-button type="button" variant="outline" size="sm">
+                                    Alterar avatar
+                                </c-button>
+                                <c-button type="button" variant="ghost" size="sm" class="text-destructive hover:text-destructive">
+                                    Remover
+                                </c-button>
+                            </div>
+                        </div>
+                    </c-card.content>
+                </c-card>
+                
+                <!-- Card de Dados do Perfil -->
+                <c-card class="mb-6">
+                    <c-card.header>
+                        <c-card.title>Detalhes do Perfil</c-card.title>
+                        <c-card.description>Atualize suas informações pessoais</c-card.description>
+                    </c-card.header>
+                    <c-card.content>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {% crispy profile_form %}
+                        </div>
+                    </c-card.content>
+                </c-card>
+                
+                <!-- Card de Senha -->
+                <c-card class="mb-6">
+                    <c-card.header>
+                        <c-card.title>Alterar Senha</c-card.title>
+                        <c-card.description>Atualize sua senha de acesso</c-card.description>
+                    </c-card.header>
+                    <c-card.content>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {% crispy change_password_form %}
+                        </div>
+                    </c-card.content>
+                </c-card>
+                
+                <!-- Botões de Ação -->
+                <div class="flex justify-end gap-3">
+                    <a href="/">
+                        <c-button type="button" variant="outline">
+                            Cancelar
+                        </c-button>
+                    </a>
+                    <c-button type="submit" variant="default">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                            <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M14 4l0 4l-6 0l0 -4" />
+                        </svg>
+                        Salvar alterações
+                    </c-button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

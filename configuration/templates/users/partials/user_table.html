@@ -1,0 +1,175 @@
+<c-card>
+    <c-card.header class="flex flex-row items-center justify-between">
+        <c-card.title>Usuários</c-card.title>
+        <a href="{% url 'configuration:user_create' %}">
+            <c-button variant="default" size="sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M12 5l0 14" />
+                    <path d="M5 12l14 0" />
+                </svg>
+                Novo Usuário
+            </c-button>
+        </a>
+    </c-card.header>
+    <c-card.content>
+        <c-table>
+            <c-table.header>
+                <c-table.row>
+                    <c-table.head>Nome</c-table.head>
+                    <c-table.head>Email</c-table.head>
+                    <c-table.head>Perfil</c-table.head>
+                    <c-table.head>Status</c-table.head>
+                    <c-table.head class="text-right">Ações</c-table.head>
+                </c-table.row>
+            </c-table.header>
+            <c-table.body>
+                {% for membership in object_list %}
+                <c-table.row>
+                    <!-- Nome com Avatar -->
+                    <c-table.cell>
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium">
+                                {{ membership.user.first_name|first|upper|default:"U" }}
+                            </div>
+                            <div>
+                                <div class="font-medium">
+                                    {{ membership.user.first_name|default:"" }} {{ membership.user.last_name|default:"" }}
+                                </div>
+                            </div>
+                        </div>
+                    </c-table.cell>
+                    
+                    <!-- Email -->
+                    <c-table.cell class="text-muted-foreground">
+                        {{ membership.user.email }}
+                    </c-table.cell>
+                    
+                    <!-- Perfil/Role -->
+                    <c-table.cell>
+                        <c-badge variant="secondary">
+                            {{ membership.get_role_display|default:"" }}
+                        </c-badge>
+                    </c-table.cell>
+                    
+                    <!-- Status -->
+                    <c-table.cell>
+                        {% if membership.is_active %}
+                            <c-badge class="bg-green-100 text-green-800 border-green-200">
+                                Ativo
+                            </c-badge>
+                        {% else %}
+                            <c-badge variant="destructive">
+                                Inativo
+                            </c-badge>
+                        {% endif %}
+                    </c-table.cell>
+                    
+                    <!-- Ações -->
+                    <c-table.cell class="text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            <!-- Botão Editar -->
+                            <a href="{% url 'configuration:user_update' membership.pk %}">
+                                <c-button variant="ghost" size="icon" title="Editar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </c-button>
+                            </a>
+                            
+                            <!-- Dropdown Menu -->
+                            <div class="relative" x-data="{ open: false }">
+                                <c-button 
+                                    variant="ghost" 
+                                    size="icon"
+                                    @click="open = !open"
+                                    title="Mais ações"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                        <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                                    </svg>
+                                </c-button>
+                                
+                                <!-- Dropdown Content -->
+                                <div 
+                                    x-show="open" 
+                                    @click.away="open = false"
+                                    x-transition:enter="transition ease-out duration-100"
+                                    x-transition:enter-start="opacity-0 scale-95"
+                                    x-transition:enter-end="opacity-100 scale-100"
+                                    x-transition:leave="transition ease-in duration-75"
+                                    x-transition:leave-start="opacity-100 scale-100"
+                                    x-transition:leave-end="opacity-0 scale-95"
+                                    class="absolute right-0 z-50 mt-2 w-48 rounded-md border bg-popover p-1 shadow-md"
+                                    x-cloak
+                                >
+                                    {% if membership.is_active %}
+                                    <button 
+                                        class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-destructive hover:bg-accent cursor-pointer"
+                                        @click="
+                                            open = false;
+                                            $dispatch('open-delete-modal', {
+                                                pk: {{ membership.pk }},
+                                                name: '{{ membership.user.first_name }} {{ membership.user.last_name }}',
+                                                deleteUrl: '{% url 'configuration:user_delete' membership.pk %}'
+                                            })
+                                        "
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M8.18 8.189a4.01 4.01 0 0 0 2.616 2.627m3.507 -.545a4 4 0 1 0 -5.59 -5.552" />
+                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4c.412 0 .81 .062 1.183 .178m2.633 2.618c.12 .38 .184 .785 .184 1.204v2" />
+                                            <path d="M3 3l18 18" />
+                                        </svg>
+                                        Desativar
+                                    </button>
+                                    {% else %}
+                                    <button 
+                                        class="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm text-green-600 hover:bg-accent cursor-pointer"
+                                        @click="
+                                            open = false;
+                                            $dispatch('open-reactivate-modal', {
+                                                pk: {{ membership.pk }},
+                                                name: '{{ membership.user.first_name }} {{ membership.user.last_name }}',
+                                                reactivateUrl: '{% url 'configuration:user_reactivate' membership.pk %}'
+                                            })
+                                        "
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                                            <path d="M15 19l2 2l4 -4" />
+                                        </svg>
+                                        Reativar
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </c-table.cell>
+                </c-table.row>
+                {% empty %}
+                <c-table.row>
+                    <c-table.cell colspan="5" class="text-center py-8 text-muted-foreground">
+                        <div class="flex flex-col items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-muted-foreground/50" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                            </svg>
+                            <p>Nenhum usuário encontrado.</p>
+                        </div>
+                    </c-table.cell>
+                </c-table.row>
+                {% endfor %}
+            </c-table.body>
+        </c-table>
+    </c-card.content>
+</c-card>

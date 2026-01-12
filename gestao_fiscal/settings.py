@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     'allauth.account',
     "debug_toolbar",
     'crispy_forms',
-    'crispy_bootstrap5',
+    'crispy_tailwind',
+    'django_cotton',
+    'django_tailwind_cli',
 ]
 
 MIDDLEWARE = [
@@ -146,6 +148,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media/'
 
+# Tailwind CLI Configuration
+TAILWIND_CLI_SRC_CSS = BASE_DIR / 'input.css'
+TAILWIND_CLI_DIST_CSS = 'css/output.css'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -182,7 +188,7 @@ INTERNAL_IPS = [
     'localhost',
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = 'tailwind'
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

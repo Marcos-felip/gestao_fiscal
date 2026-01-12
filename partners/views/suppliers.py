@@ -10,8 +10,8 @@ class SupplierListView(ListView):
         View para listar fornecedores da Empresa.
     """
     model = Supplier
-    template_name = 'suppliers/list_view.html'
-    partial_template_name = 'suppliers/includes/list_view.html'
+    template_name = 'suppliers/shadcn_list.html'
+    partial_template_name = 'suppliers/partials/supplier_table.html'
     paginate_by = 20
 
     def get_queryset(self):
@@ -58,7 +58,12 @@ class SupplierBasicCreateView(CreateView):
     """
     model = Supplier
     form_class = SupplierBasicForm
-    template_name = 'suppliers/forms/basic_info.html'
+    template_name = 'suppliers/shadcn_basic_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tab'] = 'basic'
+        return context
 
     def get_success_url(self):
         return reverse_lazy('partners:supplier_advanced', kwargs={'pk': self.object.pk})
@@ -79,8 +84,13 @@ class SupplierUpdateView(UpdateView):
     """
     model = Supplier
     form_class = SupplierBasicForm
-    template_name = 'suppliers/forms/basic_info.html'
+    template_name = 'suppliers/shadcn_basic_form.html'
     success_url = reverse_lazy('partners:supplier_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tab'] = 'basic'
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -94,8 +104,13 @@ class SupplierAdvancedUpdateView(UpdateView):
     """
     model = Supplier
     form_class = SupplierAdvancedForm
-    template_name = 'suppliers/forms/advanced_info.html'
+    template_name = 'suppliers/shadcn_advanced_form.html'
     success_url = reverse_lazy('partners:supplier_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tab'] = 'advanced'
+        return context
 
     def get_success_url(self):
         return reverse_lazy('partners:supplier_advanced', kwargs={'pk': self.object.pk})
@@ -112,7 +127,14 @@ class SupplierAddressUpdateView(UpdateView):
     """
     model = Supplier
     form_class = SupplierAddressForm
-    template_name = 'suppliers/forms/address.html'
+    template_name = 'suppliers/shadcn_address_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['active_tab'] = 'address'
+        context['object'] = self.get_object()
+        return context
+
     def get_success_url(self):
         return reverse_lazy('partners:supplier_address', kwargs={'pk': self.object.pk})
 

@@ -1,42 +1,25 @@
 <!doctype html>
-
 {% load static %}
 
-<html lang="en">
+<html lang="pt-br">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock title %}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'intl_tel_input/css/intlTelInput.css' %}">
+    
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
     {% block extrastyle %}{% endblock extrastyle %}
-    {% include 'account/includes/head.html' %}
   </head>
-  <body  class="{% block body %}{% endblock body %} ">
-    <script src="{% static 'dist/js/demo-theme.min.js' %}?1684106062"></script>
-    <div class="page-wrapper">
-      {% if request.path == '/account/login/' and not request.path == '/account/signup/' and not request.path == '/account/password/reset/' %}
-       <!-- Page header -->
-        <div class="page-header d-print-none">
-          <div class="container-xl">
-            <div class="row g-2 align-items-center">
-              <div class="col">
-                <h2 class="page-title">
-                  {% block titlebody %}{% endblock %}
-                </h2>
-              </div>
-            </div>
-          </div>
-        </div>
-      {% endif %}
-      <!-- Page body -->
-      <div class="page-body">
-        <div class="container-xl">
-          {% block content %}{% endblock content %}
-        </div>
-      </div>
-      {% include 'account/includes/footer.html' %}
+  <body class="min-h-screen bg-background font-sans antialiased {% block body %}{% endblock body %}">
+    <div class="min-h-screen flex flex-col">
+      {% block content %}{% endblock content %}
     </div>
-    {% include 'account/includes/scripts.html' %}
+    
     {% block extrajs %}{% endblock extrajs %}
   </body>
 </html>

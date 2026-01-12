@@ -10,8 +10,8 @@ class UserListView(ListView):
         View para listar os usuários do sistema.
     """
     model = Membership
-    template_name = 'users/list_view.html'
-    partial_template_name = 'users/includes/list_view.html'
+    template_name = 'users/shadcn_list.html'
+    partial_template_name = 'users/partials/user_table.html'
     
     def get_queryset(self):
         company = self.request.user.company_active
@@ -102,7 +102,7 @@ class UserCreateView(CreateView):
     """
         View para criar um novo usuário.
     """
-    template_name = 'users/create_view.html'
+    template_name = 'users/shadcn_form.html'
     model = Membership
     form_class = UserMembershipForm
     success_url = reverse_lazy('configuration:user_list')
@@ -118,7 +118,7 @@ class UserUpdateView(UpdateView):
     """
         View para atualizar um usuário existente.
     """
-    template_name = 'users/create_view.html'
+    template_name = 'users/shadcn_form.html'
     model = Membership
     form_class = UserMembershipForm
     success_url = reverse_lazy('configuration:user_list')

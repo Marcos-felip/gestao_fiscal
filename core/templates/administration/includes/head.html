@@ -7,22 +7,21 @@
 <link rel="icon" href="{% static 'favicon/favicon.svg' %}" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{% static 'favicon/apple-touch-icon.png' %}">
 <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+<!-- Tailwind CSS (shadcn) -->
+<link href="{% static 'css/output.css' %}" rel="stylesheet"/>
+<!-- Alpine.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <!-- Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<!-- CSS files -->
-<link href="{% static 'dist/css/tabler.min.css' %}?1684106062" rel="stylesheet"/>
-<link href="{% static 'dist/css/tabler-flags.min.css' %}?1684106062" rel="stylesheet"/>
-<link href="{% static 'dist/css/tabler-payments.min.css' %}?1684106062" rel="stylesheet"/>
-<link href="{% static 'dist/css/tabler-vendors.min.css' %}?1684106062" rel="stylesheet"/>
-<link href="{% static 'dist/css/demo.min.css' %}?1684106062" rel="stylesheet"/>
 <!-- Intl-Tel-Input CSS -->
 <link rel="stylesheet" type="text/css" href="{% static 'intl_tel_input/css/intlTelInput.css' %}">
+<!-- Inter Font -->
 <style>
     @import url('https://rsms.me/inter/inter.css');
     :root {
-    --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        font-family: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
     }
     body {
-    font-feature-settings: "cv03", "cv04", "cv11";
+        font-feature-settings: "cv03", "cv04", "cv11";
     }
 </style>

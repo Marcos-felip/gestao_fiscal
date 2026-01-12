@@ -15,7 +15,7 @@ class ProfileView(View):
         context['profile_form'] = profile_form
         context['change_password_form'] = change_password_form
 
-        return render(request, 'account/forms/profile.html', context)
+        return render(request, 'account/profile.html', context)
 
     def post(self, request, *args, **kwargs):
         profile_form = ProfileForm(request.POST, instance=request.user)
@@ -25,4 +25,4 @@ class ProfileView(View):
             change_password_form.save()
             ## Adicionar mensagem de sucesso ou redirecionamento
         context = {'profile_form': profile_form, 'change_password_form': change_password_form}
-        return render(request, 'account/forms/profile.html', context)
+        return render(request, 'account/profile.html', context)

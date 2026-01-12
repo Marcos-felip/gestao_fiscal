@@ -12,3 +12,5 @@ venv/
 media/
 /node_modules/
 __pycache__/
+
+.django_tailwind_cli/

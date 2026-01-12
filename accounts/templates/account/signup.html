@@ -3,34 +3,115 @@
 
 {% block title %}Cadastre-se - Gestão Fiscal{% endblock title %}
 
-{% block body %}d-flex flex-column{% endblock body %}
-
 {% block content %}
-  <div class="page page-center">
-    <div class="container container-tight py-4">
-      <div class="text-center">
-        <a href="/" class="navbar-brand navbar-brand-autodark">
-          <img src="{% static 'images/logo.png' %}" alt="logo" style="max-width: 180px; height: auto;">
-        </a>
-      </div>
-      {% include "account/forms/sign_up.html" %}
+<div class="flex min-h-screen items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md space-y-6">
+        <!-- Logo -->
+        <div class="flex justify-center">
+            <a href="/">
+                <img src="{% static 'images/logo.png' %}" alt="logo" class="h-12 w-auto">
+            </a>
+        </div>
+        
+        <!-- Card de Cadastro -->
+        <c-card>
+            <c-card.header class="text-center">
+                <c-card.title class="text-2xl">Criar nova conta</c-card.title>
+                <c-card.description>Preencha os dados abaixo para se cadastrar</c-card.description>
+            </c-card.header>
+            <c-card.content>
+                <form action="{% url 'account_signup' %}" method="post" autocomplete="off" novalidate class="space-y-4">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        {% if field.name == 'agree' %}
+                            <div class="flex items-start space-x-2">
+                                <input 
+                                    type="checkbox" 
+                                    id="{{ field.id_for_label }}" 
+                                    name="{{ field.name }}"
+                                    class="h-4 w-4 mt-0.5 rounded border-input text-primary focus:ring-primary"
+                                >
+                                <label for="{{ field.id_for_label }}" class="text-sm text-muted-foreground">
+                                    Concordo com os <a href="#" class="text-primary hover:underline">termos e a política</a>.
+                                </label>
+                            </div>
+                            {% if field.errors %}
+                            <p class="text-sm text-destructive">{{ field.errors.0 }}</p>
+                            {% endif %}
+                        {% elif field.name == 'password1' or field.name == 'password2' %}
+                            <div class="space-y-2">
+                                <label for="{{ field.id_for_label }}" class="text-sm font-medium leading-none">
+                                    {{ field.label }}
+                                </label>
+                                <div class="relative" x-data="{ show: false }">
+                                    <c-input 
+                                        :type="show ? 'text' : 'password'"
+                                        id="{{ field.id_for_label }}"
+                                        name="{{ field.name }}"
+                                        placeholder="{% if field.name == 'password1' %}Sua senha{% else %}Confirme sua senha{% endif %}"
+                                        autocomplete="new-password"
+                                        class="pr-10"
+                                    />
+                                    <button 
+                                        type="button"
+                                        @click="show = !show"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                    >
+                                        <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                            <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                        </svg>
+                                        <svg x-show="show" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M3 3l18 18" />
+                                            <path d="M10.584 10.587a2 2 0 0 0 2.828 2.83" />
+                                            <path d="M9.363 5.365a9.466 9.466 0 0 1 2.637 -.365c3.6 0 6.6 2 9 6c-.612 1.02 -1.343 1.978 -2.193 2.863" />
+                                            <path d="M14.518 14.518a9.466 9.466 0 0 1 -2.518 .482c-3.6 0 -6.6 -2 -9 -6c.612 -1.02 1.343 -1.978 2.193 -2.863" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                {% if field.errors %}
+                                <p class="text-sm text-destructive">{{ field.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="space-y-2">
+                                <label for="{{ field.id_for_label }}" class="text-sm font-medium leading-none">
+                                    {{ field.label }}
+                                </label>
+                                <c-input 
+                                    type="{% if field.name == 'email' %}email{% else %}text{% endif %}"
+                                    id="{{ field.id_for_label }}"
+                                    name="{{ field.name }}"
+                                    placeholder="{% if field.name == 'name' %}Digite seu nome{% elif field.name == 'email' %}Digite seu e-mail{% else %}{{ field.label }}{% endif %}"
+                                    autocomplete="{% if field.name == 'email' %}username{% else %}given-name{% endif %}"
+                                />
+                                {% if field.errors %}
+                                <p class="text-sm text-destructive">{{ field.errors.0 }}</p>
+                                {% endif %}
+                                {% if field.name == 'email' %}
+                                <p class="text-xs text-muted-foreground">Insira um endereço de e-mail válido</p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    <c-button type="submit" class="w-full">
+                        Criar nova conta
+                    </c-button>
+                </form>
+            </c-card.content>
+        </c-card>
+        
+        <!-- Link de login -->
+        <p class="text-center text-sm text-muted-foreground">
+            Já tem conta? 
+            <a href="{% url 'account_login' %}" class="text-primary hover:underline">
+                Faça login
+            </a>
+        </p>
     </div>
-  </div>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('[data-password-field]').forEach(function(toggle) {
-        toggle.addEventListener('click', function(e) {
-          e.preventDefault();
-          const fieldId = this.getAttribute('data-password-field');
-          const passwordField = document.querySelector('#' + fieldId);
-          const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-          passwordField.setAttribute('type', type);
-          this.querySelector('svg').innerHTML = type === 'text' 
-            ? '<path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 3l18 18" /><path d="M10.584 10.587a2 2 0 0 0 2.828 2.83" /><path d="M9.363 5.365a9.466 9.466 0 0 1 2.637 -.365c3.6 0 6.6 2 9 6c-.612 1.02 -1.343 1.978 -2.193 2.863" /><path d="M12 7c.764 0 1.528 .214 2.193 .602" /><path d="M3 12c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6" />'
-            : '<path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />';
-        });
-      });
-    });
-  </script>
+</div>
 {% endblock content %}
