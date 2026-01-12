@@ -10,3 +10,4 @@ sqlparse==0.5.3
 typing_extensions==4.15.0
 django-cotton
 django-tailwind-cli
+crispy_tailwind==0.1.3
