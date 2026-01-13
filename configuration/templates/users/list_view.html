@@ -97,69 +97,29 @@
     </div>
 
     <!-- Modal de Desativação -->
-    <div 
-        x-show="deleteModal" 
-        x-transition:enter="ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        class="fixed inset-0 z-50 flex items-center justify-center"
-        x-cloak
-        @keydown.escape.window="deleteModal = false"
-    >
-        <!-- Backdrop -->
-        <div class="fixed inset-0 bg-background/80 backdrop-blur-sm" @click="deleteModal = false"></div>
-        
-        <!-- Modal Content -->
-        <div 
-            x-transition:enter="ease-out duration-300"
-            x-transition:enter-start="opacity-0 scale-95"
-            x-transition:enter-end="opacity-100 scale-100"
-            x-transition:leave="ease-in duration-200"
-            x-transition:leave-start="opacity-100 scale-100"
-            x-transition:leave-end="opacity-0 scale-95"
-            class="fixed z-50 w-full max-w-md rounded-lg border bg-background p-6 shadow-lg"
-        >
-            <!-- Close Button -->
-            <button 
-                type="button" 
-                class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100"
-                @click="deleteModal = false"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 6 6 18"></path>
-                    <path d="m6 6 12 12"></path>
-                </svg>
-            </button>
-            
-            <!-- Icon -->
-            <div class="flex flex-col items-center text-center">
-                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-destructive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 9v4"></path>
-                        <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"></path>
-                        <path d="M12 16h.01"></path>
-                    </svg>
-                </div>
-                
-                <h3 class="text-lg font-semibold">Desativar Usuário</h3>
-                <p class="text-sm text-muted-foreground mt-2">
+    <c-dialog name="deleteModal">
+        <c-dialog.content open_var="deleteModal" hide_action="deleteModal = false">
+            <c-dialog.icon variant="destructive">
+                <c-dialog.title>Desativar Usuário</c-dialog.title>
+                <c-dialog.description>
                     Você realmente deseja desativar o usuário <strong x-text="selectedUser.name"></strong>?
-                </p>
-            </div>
+                </c-dialog.description>
+            </c-dialog.icon>
             
-            <!-- Footer -->
-            <div class="flex justify-end gap-3 mt-6">
+            <c-dialog.footer class="mt-6">
                 <c-button variant="outline" type="button" @click="deleteModal = false">
                     Cancelar
                 </c-button>
                 <form 
+                    id="delete-user-form"
                     method="POST"
-                    :action="selectedUser.deleteUrl"
-                    hx-post
-                    :hx-post="selectedUser.deleteUrl"
+                    x-bind:action="selectedUser.deleteUrl"
+                    x-init="$watch('selectedUser.deleteUrl', value => { 
+                        if(value) {
+                            $el.setAttribute('hx-post', value);
+                            htmx.process($el);
+                        }
+                    })"
                     hx-target="#users-table-container" 
                     hx-swap="innerHTML"
                     @htmx:after-request="deleteModal = false"
@@ -169,73 +129,34 @@
                         Desativar
                     </c-button>
                 </form>
-            </div>
-        </div>
-    </div>
+            </c-dialog.footer>
+        </c-dialog.content>
+    </c-dialog>
 
     <!-- Modal de Reativação -->
-    <div 
-        x-show="reactivateModal" 
-        x-transition:enter="ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        class="fixed inset-0 z-50 flex items-center justify-center"
-        x-cloak
-        @keydown.escape.window="reactivateModal = false"
-    >
-        <!-- Backdrop -->
-        <div class="fixed inset-0 bg-background/80 backdrop-blur-sm" @click="reactivateModal = false"></div>
-        
-        <!-- Modal Content -->
-        <div 
-            x-transition:enter="ease-out duration-300"
-            x-transition:enter-start="opacity-0 scale-95"
-            x-transition:enter-end="opacity-100 scale-100"
-            x-transition:leave="ease-in duration-200"
-            x-transition:leave-start="opacity-100 scale-100"
-            x-transition:leave-end="opacity-0 scale-95"
-            class="fixed z-50 w-full max-w-md rounded-lg border bg-background p-6 shadow-lg"
-        >
-            <!-- Close Button -->
-            <button 
-                type="button" 
-                class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100"
-                @click="reactivateModal = false"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 6 6 18"></path>
-                    <path d="m6 6 12 12"></path>
-                </svg>
-            </button>
-            
-            <!-- Icon -->
-            <div class="flex flex-col items-center text-center">
-                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="M9 12l2 2l4 -4"></path>
-                    </svg>
-                </div>
-                
-                <h3 class="text-lg font-semibold">Reativar Usuário</h3>
-                <p class="text-sm text-muted-foreground mt-2">
+    <c-dialog name="reactivateModal">
+        <c-dialog.content open_var="reactivateModal" hide_action="reactivateModal = false">
+            <c-dialog.icon variant="success">
+                <c-dialog.title>Reativar Usuário</c-dialog.title>
+                <c-dialog.description>
                     Você realmente deseja reativar o usuário <strong x-text="selectedUser.name"></strong>?
-                </p>
-            </div>
+                </c-dialog.description>
+            </c-dialog.icon>
             
-            <!-- Footer -->
-            <div class="flex justify-end gap-3 mt-6">
+            <c-dialog.footer class="mt-6">
                 <c-button variant="outline" type="button" @click="reactivateModal = false">
                     Cancelar
                 </c-button>
                 <form 
+                    id="reactivate-user-form"
                     method="POST"
-                    :action="selectedUser.reactivateUrl"
-                    hx-post
-                    :hx-post="selectedUser.reactivateUrl"
+                    x-bind:action="selectedUser.reactivateUrl"
+                    x-init="$watch('selectedUser.reactivateUrl', value => { 
+                        if(value) {
+                            $el.setAttribute('hx-post', value);
+                            htmx.process($el);
+                        }
+                    })"
                     hx-target="#users-table-container" 
                     hx-swap="innerHTML"
                     @htmx:after-request="reactivateModal = false"
@@ -245,8 +166,8 @@
                         Reativar
                     </c-button>
                 </form>
-            </div>
-        </div>
-    </div>
+            </c-dialog.footer>
+        </c-dialog.content>
+    </c-dialog>
 </div>
 {% endblock content %}

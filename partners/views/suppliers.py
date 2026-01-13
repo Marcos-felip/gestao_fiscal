@@ -1,4 +1,6 @@
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from partners.forms.suppliers import SupplierAddressForm, SupplierAdvancedForm, SupplierBasicForm
 from partners.models.suppliers import Supplier
 from django.urls import reverse_lazy
@@ -16,7 +18,7 @@ class SupplierListView(ListView):
 
     def get_queryset(self):
         company = self.request.user.company_active
-        queryset = Supplier.objects.filter(company=company)
+        queryset = Supplier.objects.filter(company=company, is_active=True)
 
         # Aplicar filtros
         search = self.request.GET.get('search', '')
@@ -159,3 +161,29 @@ class SupplierAddressUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['object'] = self.supplier
         return context
+
+
+class SupplierDeleteView(DeleteView):
+    """
+        View para deletar um fornecedor.
+    """
+    model = Supplier
+    success_url = reverse_lazy('partners:supplier_list')
+
+    def get_queryset(self):
+        company = self.request.user.company_active
+        return Supplier.objects.filter(company=company, is_active=True)
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+        
+        if request.headers.get('Hx-Request'):
+            queryset = self.get_queryset()
+            return render(request, 'suppliers/partials/supplier_table.html', {
+                'object_list': queryset,
+                'page_obj': queryset
+            })
+        
+        return HttpResponseRedirect(self.success_url)

@@ -1,9 +1,111 @@
 {% load static %}
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Select2 JS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- HTMX -->
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-<!-- jQuery Mask Plugin -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script defer src="https://unpkg.com/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+<!-- Alpine.js -->
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<!-- Alpine.js Global Store e Funções Utilitárias -->
+<script>
+    // Plugin de máscara deve ser registrado antes do Alpine iniciar
+    document.addEventListener('alpine:init', () => {
+        // Store global para modais
+        Alpine.store('modal', {
+            deleteOpen: false,
+            deleteData: null,
+            
+            openDelete(data) {
+                this.deleteData = data;
+                this.deleteOpen = true;
+                document.body.classList.add('overflow-hidden');
+            },
+            
+            closeDelete() {
+                this.deleteOpen = false;
+                this.deleteData = null;
+                document.body.classList.remove('overflow-hidden');
+            }
+        });
+        
+        Alpine.directive('cep', (el, { expression }, { evaluate }) => {
+            el.addEventListener('blur', async function() {
+                const cep = this.value.replace(/\D/g, '');
+                if (cep.length === 8) {
+                    try {
+                        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                        const data = await response.json();
+                        if (!data.erro) {
+                            const form = el.closest('form');
+                            if (form) {
+                                const streetInput = form.querySelector('[name="street"], #id_street');
+                                const neighborhoodInput = form.querySelector('[name="neighborhood"], #id_neighborhood');
+                                const cityInput = form.querySelector('[name="city"], #id_city');
+                                const stateInput = form.querySelector('[name="state"], #id_state');
+                                
+                                if (streetInput) streetInput.value = data.logradouro;
+                                if (neighborhoodInput) neighborhoodInput.value = data.bairro;
+                                if (cityInput) cityInput.value = data.localidade;
+                                if (stateInput) stateInput.value = data.uf;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Erro ao buscar CEP:', error);
+                    }
+                }
+            });
+        });
+    });
+    
+    function maskCPF(value) {
+        return value
+            .replace(/\D/g, '')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+            .substring(0, 14);
+    }
+    
+    function maskCNPJ(value) {
+        return value
+            .replace(/\D/g, '')
+            .replace(/(\d{2})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1/$2')
+            .replace(/(\d{4})(\d{1,2})$/, '$1-$2')
+            .substring(0, 18);
+    }
+    
+    function maskPhone(value) {
+        return value
+            .replace(/\D/g, '')
+            .replace(/(\d{2})(\d)/, '($1) $2')
+            .replace(/(\d{5})(\d{1,4})$/, '$1-$2')
+            .substring(0, 15);
+    }
+    
+    function maskCEP(value) {
+        return value
+            .replace(/\D/g, '')
+            .replace(/(\d{5})(\d{1,3})$/, '$1-$2')
+            .substring(0, 9);
+    }
+</script>
+
+<script>
+    document.body.addEventListener('htmx:configRequest', function(evt) {
+        // Adiciona CSRF token em todas as requisições HTMX
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+                          document.querySelector('meta[name="csrf-token"]')?.content;
+        if (csrfToken) {
+            evt.detail.headers['X-CSRFToken'] = csrfToken;
+        }
+    });
+    
+    // Após requisições HTMX bem-sucedidas, reinicializa componentes Alpine se necessário
+    document.body.addEventListener('htmx:afterSwap', function(evt) {});
+</script>

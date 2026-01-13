@@ -2,7 +2,13 @@
 {% load crispy_forms_tags %}
 
 {% block form_content %}
-<form method="post" id="customer-form" class="space-y-6">
+<form method="post" id="customer-form" class="space-y-6"
+      x-data="{
+          personType: '{{ form.person_type.value|default:"PF" }}',
+          cpf: '{{ form.cpf.value|default:"" }}',
+          cnpj: '{{ form.cnpj.value|default:"" }}',
+          cellphone: '{{ form.cellphone.value|default:"" }}'
+      }">
     {% csrf_token %}
     {{ form|crispy }}
     {{ form.media }}
@@ -34,27 +40,56 @@
 
 {% block extrajs %}
 <script>
+document.addEventListener('alpine:init', () => {
+    // Aplica máscaras e toggle de campos após o DOM estar pronto
+    const form = document.getElementById('customer-form');
+    if (!form) return;
+    
+    const personTypeSelect = form.querySelector('#id_person_type');
+    const cpfField = form.querySelector('#id_cpf');
+    const cnpjField = form.querySelector('#id_cnpj');
+    const tradingNameField = form.querySelector('#id_trading_name');
+    const cellphoneField = form.querySelector('#id_cellphone');
+    
     function togglePersonType() {
-        let personType = $('#id_person_type').val();
+        const personType = personTypeSelect?.value;
+        const cpfContainer = cpfField?.closest('.mb-3');
+        const cnpjContainer = cnpjField?.closest('.mb-3');
+        const tradingNameContainer = tradingNameField?.closest('.mb-3');
+        
         if (personType === 'PJ') {
-            $('#id_cnpj').closest('.mb-3').show();
-            $('#id_trading_name').closest('.mb-3').show();
-            $('#id_cpf').closest('.mb-3').hide();
-        } else if (personType === 'PF') {
-            $('#id_cnpj').closest('.mb-3').hide();
-            $('#id_trading_name').closest('.mb-3').hide();
-            $('#id_cpf').closest('.mb-3').show();
+            if (cnpjContainer) cnpjContainer.style.display = '';
+            if (tradingNameContainer) tradingNameContainer.style.display = '';
+            if (cpfContainer) cpfContainer.style.display = 'none';
+        } else {
+            if (cnpjContainer) cnpjContainer.style.display = 'none';
+            if (tradingNameContainer) tradingNameContainer.style.display = 'none';
+            if (cpfContainer) cpfContainer.style.display = '';
         }
     }
-
-    togglePersonType();
-
-    $('#id_person_type').change(function() {
+    
+    if (cpfField) {
+        cpfField.addEventListener('input', function() {
+            this.value = maskCPF(this.value);
+        });
+    }
+    
+    if (cnpjField) {
+        cnpjField.addEventListener('input', function() {
+            this.value = maskCNPJ(this.value);
+        });
+    }
+    
+    if (cellphoneField) {
+        cellphoneField.addEventListener('input', function() {
+            this.value = maskPhone(this.value);
+        });
+    }
+    
+    if (personTypeSelect) {
         togglePersonType();
-    });
-
-    $('#id_cpf').mask('000.000.000-00');
-    $('#id_cnpj').mask('00.000.000/0000-00');
-    $('#id_cellphone').mask('(00) 00000-0000');
+        personTypeSelect.addEventListener('change', togglePersonType);
+    }
+});
 </script>
 {% endblock extrajs %}

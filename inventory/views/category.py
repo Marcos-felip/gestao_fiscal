@@ -2,6 +2,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from inventory.forms.category import CategoryForm
 from inventory.models.category import Category
 from django.urls import reverse_lazy
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.db.models import Q
 
@@ -93,4 +94,12 @@ class CategoryDeleteView(DeleteView):
         # TODO: implementar verificação para nao deletar uma categoria com produtos associados
         self.object.is_active = False
         self.object.save()
+        
+        if request.headers.get('Hx-Request'):
+            queryset = self.get_queryset()
+            return render(request, 'category/partials/category_table.html', {
+                'object_list': queryset,
+                'page_obj': queryset
+            })
+        
         return HttpResponseRedirect(self.success_url)

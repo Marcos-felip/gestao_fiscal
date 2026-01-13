@@ -25,7 +25,6 @@
                 <c-table.row>
                     <c-table.head>Nome</c-table.head>
                     <c-table.head>Descrição</c-table.head>
-                    <c-table.head>Status</c-table.head>
                     <c-table.head class="text-right">Ações</c-table.head>
                 </c-table.row>
             </c-table.header>
@@ -38,17 +37,10 @@
                     <c-table.cell>
                         {{ category.description|default:"-"|truncatechars:50 }}
                     </c-table.cell>
-                    <c-table.cell>
-                        {% if category.is_active %}
-                        <c-badge variant="default">Ativa</c-badge>
-                        {% else %}
-                        <c-badge variant="secondary">Inativa</c-badge>
-                        {% endif %}
-                    </c-table.cell>
                     <c-table.cell class="text-right">
                         <div class="flex justify-end gap-2">
                             <a href="{% url 'inventory:category_update' pk=category.pk %}">
-                                <c-button variant="outline" size="sm">
+                                <c-button variant="outline" size="icon" title="Editar">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                         <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
@@ -59,11 +51,9 @@
                             </a>
                             <c-button 
                                 variant="destructive" 
-                                size="sm"
-                                hx-delete="{% url 'inventory:category_delete' pk=category.pk %}"
-                                hx-confirm="Tem certeza que deseja desativar esta categoria?"
-                                hx-target="#categories-table-container"
-                                hx-swap="innerHTML"
+                                size="icon"
+                                @click="$dispatch('open-delete-modal', { pk: {{ category.pk }}, name: '{{ category.name }}', deleteUrl: '{% url 'inventory:category_delete' pk=category.pk %}' })"
+                                title="Desativar"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"/>

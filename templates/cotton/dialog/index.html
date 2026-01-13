@@ -1,5 +1,12 @@
-<c-vars default_open="false"></c-vars>
+<c-vars default_open="false" name=""></c-vars>
 
+{% if name %}
+{# Dialog controlado externamente via variável Alpine #}
+<div {{ attrs }}>
+  {{ slot }}
+</div>
+{% else %}
+{# Dialog auto-gerenciado (padrão) #}
 <div
   x-data="{
     open: {{ default_open|lower }},
@@ -29,3 +36,4 @@
 >
   {{ slot }}
 </div>
+{% endif %}

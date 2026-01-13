@@ -2,6 +2,7 @@ from django.views.generic import TemplateView, ListView, CreateView, UpdateView,
 from inventory.models.product import Product, ProductFiscalData
 from inventory.forms.product import ProductDataForm, ProductTaxForm
 from django.urls import reverse_lazy
+from django.shortcuts import render
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 
@@ -148,4 +149,12 @@ class ProductDeleteView(DeleteView):
         self.object = self.get_object()
         self.object.is_active = False
         self.object.save()
+        
+        if request.headers.get('Hx-Request'):
+            queryset = self.get_queryset()
+            return render(request, 'product/partials/product_table.html', {
+                'object_list': queryset,
+                'page_obj': queryset
+            })
+        
         return HttpResponseRedirect(self.success_url)

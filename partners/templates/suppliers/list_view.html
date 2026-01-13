@@ -11,7 +11,14 @@
 {% endblock titlebody %}
 
 {% block content %}
-<div class="px-6 pb-6">
+<div 
+    class="px-6 pb-6"
+    x-data="{ 
+        deleteModal: false, 
+        selectedSupplier: { pk: null, name: '', deleteUrl: '' }
+    }"
+    @open-delete-modal.window="selectedSupplier = $event.detail; deleteModal = true"
+>
     <!-- Filtros -->
     <c-card class="mb-4">
         <c-card.content class="pt-6">
@@ -53,5 +60,42 @@
     <div id="suppliers-table-container">
         {% include "suppliers/partials/supplier_table.html" %}
     </div>
+
+    <!-- Modal de Desativação -->
+    <c-dialog name="deleteModal">
+        <c-dialog.content open_var="deleteModal" hide_action="deleteModal = false">
+            <c-dialog.icon variant="destructive">
+                <c-dialog.title>Desativar Fornecedor</c-dialog.title>
+                <c-dialog.description>
+                    Você realmente deseja desativar o fornecedor <strong x-text="selectedSupplier.name"></strong>?
+                </c-dialog.description>
+            </c-dialog.icon>
+            
+            <c-dialog.footer class="mt-6">
+                <c-button variant="outline" type="button" @click="deleteModal = false">
+                    Cancelar
+                </c-button>
+                <form 
+                    id="delete-supplier-form"
+                    method="POST"
+                    x-bind:action="selectedSupplier.deleteUrl"
+                    x-init="$watch('selectedSupplier.deleteUrl', value => { 
+                        if(value) {
+                            $el.setAttribute('hx-post', value);
+                            htmx.process($el);
+                        }
+                    })"
+                    hx-target="#suppliers-table-container" 
+                    hx-swap="innerHTML"
+                    @htmx:after-request="deleteModal = false"
+                >
+                    {% csrf_token %}
+                    <c-button type="submit" variant="destructive">
+                        Desativar
+                    </c-button>
+                </form>
+            </c-dialog.footer>
+        </c-dialog.content>
+    </c-dialog>
 </div>
 {% endblock content %}

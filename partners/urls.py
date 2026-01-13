@@ -10,6 +10,7 @@ urlpatterns = [
     path('customers/<int:pk>/edit/', customers.CustomerUpdateView.as_view(), name='customer_update'),
     path('customers/<int:pk>/edit/advanced/', customers.CustomerAdvancedUpdateView.as_view(), name='customer_advanced'),
     path('customers/<int:pk>/edit/address/', customers.CustomerAddressUpdateView.as_view(), name='customer_address'),
+    path('customers/<int:pk>/delete/', customers.CustomerDeleteView.as_view(), name='customer_delete'),
 
     path('suppliers/', suppliers.SupplierListView.as_view(), name='supplier_list'),
     path('suppliers/create/', suppliers.SupplierTemplateView.as_view(), name='supplier_base'),
@@ -17,5 +18,6 @@ urlpatterns = [
     path('suppliers/<int:pk>/edit/', suppliers.SupplierUpdateView.as_view(), name='supplier_update'),
     path('suppliers/<int:pk>/edit/advanced/', suppliers.SupplierAdvancedUpdateView.as_view(), name='supplier_advanced'),
     path('suppliers/<int:pk>/edit/address/', suppliers.SupplierAddressUpdateView.as_view(), name='supplier_address'),
+    path('suppliers/<int:pk>/delete/', suppliers.SupplierDeleteView.as_view(), name='supplier_delete'),
     
 ]

@@ -2,6 +2,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from inventory.forms.unit import UnitForm
 from inventory.models.units import Unit
 from django.urls import reverse_lazy
+from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.db.models import Q
 
@@ -93,4 +94,12 @@ class UnitDeleteView(DeleteView):
         self.object = self.get_object()
         self.object.is_active = False
         self.object.save()
+        
+        if request.headers.get('Hx-Request'):
+            queryset = self.get_queryset()
+            return render(request, 'unit/partials/unit_table.html', {
+                'object_list': queryset,
+                'page_obj': queryset
+            })
+        
         return HttpResponseRedirect(self.success_url)

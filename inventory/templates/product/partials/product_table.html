@@ -65,7 +65,7 @@
                     <c-table.cell class="text-right">
                         <div class="flex justify-end gap-2">
                             <a href="{% url 'inventory:product_update' pk=product.id %}">
-                                <c-button variant="outline" size="sm" title="Editar">
+                                <c-button variant="outline" size="icon" title="Editar">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                         <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
@@ -75,7 +75,7 @@
                                 </c-button>
                             </a>
                             <a href="{% url 'inventory:product_tax' pk=product.id %}">
-                                <c-button variant="outline" size="sm" title="Dados Fiscais">
+                                <c-button variant="outline" size="icon" title="Dados Fiscais">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                         <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
@@ -87,11 +87,8 @@
                             </a>
                             <c-button 
                                 variant="destructive" 
-                                size="sm"
-                                hx-delete="{% url 'inventory:product_delete' pk=product.id %}"
-                                hx-confirm="Tem certeza que deseja desativar este produto?"
-                                hx-target="#products-table-container"
-                                hx-swap="innerHTML"
+                                size="icon"
+                                @click="$dispatch('open-delete-modal', { pk: {{ product.id }}, name: '{{ product.name }}', deleteUrl: '{% url 'inventory:product_delete' pk=product.id %}' })"
                                 title="Desativar"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">

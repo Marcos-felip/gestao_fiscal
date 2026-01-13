@@ -35,21 +35,40 @@
 
 {% block extrajs %}
 <script>
-    $('#id_zip_code').mask('00000-000');
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('customer-form');
+    if (!form) return;
     
-    // Busca CEP
-    $('#id_zip_code').on('blur', function() {
-        var cep = $(this).val().replace(/\D/g, '');
-        if (cep.length === 8) {
-            $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(data) {
-                if (!data.erro) {
-                    $('#id_street').val(data.logradouro);
-                    $('#id_neighborhood').val(data.bairro);
-                    $('#id_city').val(data.localidade);
-                    $('#id_state').val(data.uf);
+    const zipCodeField = form.querySelector('#id_zip_code');
+    
+    if (zipCodeField) {
+        zipCodeField.addEventListener('input', function() {
+            this.value = maskCEP(this.value);
+        });
+        
+        zipCodeField.addEventListener('blur', async function() {
+            const cep = this.value.replace(/\D/g, '');
+            if (cep.length === 8) {
+                try {
+                    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    const data = await response.json();
+                    if (!data.erro) {
+                        const streetInput = form.querySelector('#id_street');
+                        const neighborhoodInput = form.querySelector('#id_neighborhood');
+                        const cityInput = form.querySelector('#id_city');
+                        const stateInput = form.querySelector('#id_state');
+                        
+                        if (streetInput) streetInput.value = data.logradouro;
+                        if (neighborhoodInput) neighborhoodInput.value = data.bairro;
+                        if (cityInput) cityInput.value = data.localidade;
+                        if (stateInput) stateInput.value = data.uf;
+                    }
+                } catch (error) {
+                    console.error('Erro ao buscar CEP:', error);
                 }
-            });
-        }
-    });
+            }
+        });
+    }
+});
 </script>
 {% endblock extrajs %}

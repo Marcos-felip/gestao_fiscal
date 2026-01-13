@@ -70,7 +70,7 @@
                         <div class="flex items-center justify-end gap-2">
                             <!-- Botão Editar -->
                             <a href="{% url 'configuration:user_update' membership.pk %}">
-                                <c-button variant="ghost" size="icon" title="Editar">
+                                <c-button variant="outline" size="icon" title="Editar">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                         <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
@@ -83,7 +83,7 @@
                             <!-- Dropdown Menu -->
                             <div class="relative" x-data="{ open: false }">
                                 <c-button 
-                                    variant="ghost" 
+                                    variant="outline" 
                                     size="icon"
                                     @click="open = !open"
                                     title="Mais ações"

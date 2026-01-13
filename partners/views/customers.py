@@ -1,4 +1,6 @@
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from partners.models.customers import Customer
 from core.models.address import Address
 from partners.forms.customers import CustomerAddressForm, CustomerAdvancedForm, CustomerBasicForm
@@ -17,7 +19,7 @@ class CustomerListView(ListView):
 
     def get_queryset(self):
         company = self.request.user.company_active
-        queryset = Customer.objects.filter(company=company)
+        queryset = Customer.objects.filter(company=company, is_active=True)
 
         # Aplicar filtros
         search = self.request.GET.get('search', '')
@@ -156,3 +158,29 @@ class CustomerAddressUpdateView(UpdateView):
         context['object'] = self.customer
         context['active_tab'] = 'address'
         return context
+
+
+class CustomerDeleteView(DeleteView):
+    """
+        View para deletar um cliente.
+    """
+    model = Customer
+    success_url = reverse_lazy('partners:customer_list')
+
+    def get_queryset(self):
+        company = self.request.user.company_active
+        return Customer.objects.filter(company=company, is_active=True)
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+        
+        if request.headers.get('Hx-Request'):
+            queryset = self.get_queryset()
+            return render(request, 'customers/partials/customer_table.html', {
+                'object_list': queryset,
+                'page_obj': queryset
+            })
+        
+        return HttpResponseRedirect(self.success_url)

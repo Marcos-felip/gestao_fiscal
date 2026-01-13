@@ -38,7 +38,7 @@
             </c-card.description>
         </c-card.header>
         <c-card.content>
-            <form method="post" class="space-y-6">
+            <form method="post" id="user-form" class="space-y-6">
                 {% csrf_token %}
                 
                 <div class="grid gap-6">
@@ -77,26 +77,35 @@
 {% block extrajs %}
 <script>
 $(document).ready(function() {
-    // Adiciona o ID ao formulário para o botão submit funcionar
-    $('form').attr('id', 'user-form');
+    $('#id_permissions').select2({
+        placeholder: 'Selecione as permissões',
+        allowClear: true,
+        width: '100%'
+    });
     
-    $('#id_permissions').select2({});
-
-    /* Função para ocultar/mostrar o field permissions
-        Se role for 'admin' ou 'owner', oculta o campo permissions
-        Senão, mostra o campo permissions
-    */
+    const form = document.getElementById('user-form');
+    if (!form) return;
+    
+    const roleSelect = form.querySelector('#id_role');
+    const permissionsField = form.querySelector('#id_permissions');
+    
     function togglePermissions() {
-        let role = $('#id_role').val();
+        if (!roleSelect || !permissionsField) return;
+        
+        const role = roleSelect.value;
+        const permissionsContainer = permissionsField.closest('.mb-3');
+        
         if (role === 'admin' || role === 'owner') {
-            $('#id_permissions').closest('.mb-3').hide();
+            if (permissionsContainer) permissionsContainer.style.display = 'none';
         } else {
-            $('#id_permissions').closest('.mb-3').show();
+            if (permissionsContainer) permissionsContainer.style.display = '';
         }
     }
-
+    
     togglePermissions();
-    $('#id_role').change(togglePermissions);
+    if (roleSelect) {
+        roleSelect.addEventListener('change', togglePermissions);
+    }
 });
 </script>
 {% endblock extrajs %}
