@@ -70,6 +70,44 @@ Sistema de gestão fiscal desenvolvido com Django para controle e administraçã
 
 8. **Acesse:** http://127.0.0.1:8000/
 
+## 🔀 Fluxo de Branches (Git Flow)
+
+Este projeto utiliza o padrão [Git Flow]:
+
+- **main**: branch de produção
+- **develop**: branch de desenvolvimento
+- Prefixos para branches de suporte:
+   - `feature/` para novas funcionalidades
+   - `bugfix/` para correções
+   - `release/` para preparação de releases
+   - `hotfix/` para correções urgentes
+   - `support/` para suporte
+
+### Comandos básicos
+
+Inicie o fluxo:
+```bash
+git flow init
+```
+
+Crie uma nova feature:
+```bash
+git flow feature start nome-da-feature
+```
+
+Finalize uma feature:
+```bash
+git flow feature finish nome-da-feature
+```
+
+Para releases, hotfixes e outros, utilize os comandos equivalentes:
+```bash
+git flow release start v1.0.0
+git flow hotfix start nome-do-hotfix
+```
+
+Consulte a [documentação oficial do Git Flow](https://github.com/nvie/gitflow) para mais detalhes.
+
 ## 💻 Desenvolvimento
 
 Para desenvolvimento, rode o Tailwind em modo watch para recompilar automaticamente:
