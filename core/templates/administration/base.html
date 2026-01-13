@@ -12,13 +12,13 @@
     <div class="flex min-h-screen w-full">
       <!-- Sidebar -->
       {% block sidebar %}
-        {% include 'administration/includes/sidebar_tailwind.html' %}
+        {% include 'administration/includes/sidebar.html' %}
       {% endblock sidebar %}
       
       <div class="flex-1 flex flex-col">
         <!-- Navbar -->
         {% block navigation %}
-          {% include 'administration/includes/navigation_tailwind.html' %}
+          {% include 'administration/includes/navigation.html' %}
         {% endblock navigation %}
         
         <main class="flex-1 overflow-auto">
@@ -28,7 +28,7 @@
           {% block content %}{% endblock content %}
         </main>
         
-        {% include 'administration/includes/footer_tailwind.html' %}
+        {% include 'administration/includes/footer.html' %}
       </div>
     </div>
     <!-- Modals -->

@@ -10,7 +10,7 @@ class SupplierListView(ListView):
         View para listar fornecedores da Empresa.
     """
     model = Supplier
-    template_name = 'suppliers/shadcn_list.html'
+    template_name = 'suppliers/list_view.html'
     partial_template_name = 'suppliers/partials/supplier_table.html'
     paginate_by = 20
 
@@ -58,7 +58,7 @@ class SupplierBasicCreateView(CreateView):
     """
     model = Supplier
     form_class = SupplierBasicForm
-    template_name = 'suppliers/shadcn_basic_form.html'
+    template_name = 'suppliers/create_view_basic_form.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -84,7 +84,7 @@ class SupplierUpdateView(UpdateView):
     """
     model = Supplier
     form_class = SupplierBasicForm
-    template_name = 'suppliers/shadcn_basic_form.html'
+    template_name = 'suppliers/create_view_basic_form.html'
     success_url = reverse_lazy('partners:supplier_list')
 
     def get_context_data(self, **kwargs):
@@ -104,7 +104,7 @@ class SupplierAdvancedUpdateView(UpdateView):
     """
     model = Supplier
     form_class = SupplierAdvancedForm
-    template_name = 'suppliers/shadcn_advanced_form.html'
+    template_name = 'suppliers/create_view_advanced_form.html'
     success_url = reverse_lazy('partners:supplier_list')
 
     def get_context_data(self, **kwargs):
@@ -127,7 +127,7 @@ class SupplierAddressUpdateView(UpdateView):
     """
     model = Supplier
     form_class = SupplierAddressForm
-    template_name = 'suppliers/shadcn_address_form.html'
+    template_name = 'suppliers/create_view_address_form.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

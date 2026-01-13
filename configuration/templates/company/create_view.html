@@ -2,38 +2,43 @@
 
 {% load crispy_forms_tags %}
 
-{% load static %}
-
-{% block title %}Cadastro de Empresa - Gestão Fiscal{% endblock title %}
+{% block title %}Configurações da Empresa - Gestão Fiscal{% endblock title %}
 
 {% block titlebody %}
-<div class="container-xl mt-3">
-    <div class="row g-2 align-items-center">
-        <div class="col">
-            <h2 class="page-title">Cadastro de Empresa</h2>
-        </div>
-    </div>
+<div class="flex items-center px-6 py-4">
+    <h2 class="text-2xl font-semibold tracking-tight">Configurações da Empresa</h2>
 </div>
 {% endblock titlebody %}
 
 {% block content %}
-<div class="container-xl mt-3">
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title"> Cadastro de Empresa</h3>
-        </div>
-        <div class="card-body">
-            <form class="space-y">
+<div class="px-6 pb-6">
+    <c-card>
+        <c-card.header>
+            <c-card.title>Dados da Empresa</c-card.title>
+            <c-card.description>Atualize as informações da sua empresa</c-card.description>
+        </c-card.header>
+        <c-card.content>
+            <form method="post">
                 {% csrf_token %}
-                {{ form|crispy }}
-                {{form.media}}
-                <div class="d-flex justify-content-end mb-3">
-                    <button class="btn btn-primary btn-3">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {{ form|crispy }}
+                </div>
+                {{ form.media }}
+                
+                <div class="flex justify-end gap-3 mt-6 pt-6 border-t">
+                    <c-button type="submit" variant="default">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                            <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M14 4l0 4l-6 0l0 -4" />
+                        </svg>
                         Salvar
-                    </button>
+                    </c-button>
                 </div>
             </form>
-        </div>
-    </div>
+        </c-card.content>
+    </c-card>
 </div>
 {% endblock content %}

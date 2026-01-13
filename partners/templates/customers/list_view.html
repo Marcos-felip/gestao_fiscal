@@ -5,56 +5,55 @@
 {% block title %}Clientes - Gestão Fiscal{% endblock title %}
 
 {% block titlebody %}
-<div class="row g-2 align-items-center px-4 mt-3">
-    <div class="col">
-        <h2 class="page-title">Clientes</h2>
-    </div>
+<div class="flex items-center px-6 py-4">
+    <h2 class="text-2xl font-semibold tracking-tight">Clientes</h2>
 </div>
 {% endblock titlebody %}
 
 {% block content %}
-<div class="page-body px-4">
-    <div class="card mb-3">
-        <div class="card-body">
+<div class="px-6 pb-6">
+    <!-- Filtros -->
+    <c-card class="mb-4">
+        <c-card.content class="pt-6">
             <form 
-                class="d-flex" 
+                class="flex flex-wrap gap-4 items-center"
                 hx-get="{% url 'partners:customer_list' %}" 
-                hx-target="#customers-table" 
+                hx-target="#customers-table-container" 
                 hx-trigger="change from:.filter-control, submit" 
                 hx-swap="innerHTML"
                 hx-push-url="true"
             >
-                <div class="input-icon flex-grow-1 me-3">
-                    <span class="input-icon-addon">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
-                    </span>
-                    <input type="text" class="form-control filter-control" placeholder="Buscar por Nome/Razão Social ou CPF/CNPJ" name="search" value="{{ current_search }}">
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
-                    Buscar
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Clientes</h3>
-            <div class="card-actions">
-                <a href="{% url 'partners:customer_create_basic' %}" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Busca -->
+                <div class="relative flex-grow min-w-[200px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M12 5l0 14" />
-                        <path d="M5 12l14 0" />
+                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                        <path d="M21 21l-6 -6" />
                     </svg>
-                    Novo Cliente
-                </a>
-            </div>
-        </div>
-        <div class="table-responsive" id="customers-table">
-            {% include "customers/includes/list_view.html" %}
-        </div>
+                    <c-input 
+                        type="text" 
+                        class="filter-control pl-10" 
+                        placeholder="Buscar por Nome/Razão Social ou CPF/CNPJ" 
+                        name="search" 
+                        value="{{ current_search }}"
+                    />
+                </div>
+
+                <c-button type="submit" variant="default">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                        <path d="M21 21l-6 -6" />
+                    </svg>
+                    Buscar
+                </c-button>
+            </form>
+        </c-card.content>
+    </c-card>
+
+    <!-- Tabela de Clientes -->
+    <div id="customers-table-container">
+        {% include "customers/partials/customer_table.html" %}
     </div>
 </div>
 {% endblock content %}

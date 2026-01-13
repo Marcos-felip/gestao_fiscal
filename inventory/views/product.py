@@ -11,7 +11,7 @@ class ProductListView(ListView):
         View para listar produtos da Empresa.
     """
     model = Product
-    template_name = 'product/shadcn_list.html'
+    template_name = 'product/list_view.html'
     partial_template_name = 'product/partials/product_table.html'
     paginate_by = 20
 
@@ -61,7 +61,7 @@ class ProductDataCreateView(CreateView):
     """
     model = Product
     form_class = ProductDataForm
-    template_name = 'product/shadcn_data_form.html'
+    template_name = 'product/create_view_data_form.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -87,7 +87,7 @@ class ProductDataUpdateView(UpdateView):
     """
     model = Product
     form_class = ProductDataForm
-    template_name = 'product/shadcn_data_form.html'
+    template_name = 'product/create_view_data_form.html'
     success_url = reverse_lazy('inventory:product_list')
 
     def get_context_data(self, **kwargs):
@@ -107,7 +107,7 @@ class ProductTaxUpdateView(UpdateView):
     """
     model = Product
     form_class = ProductTaxForm
-    template_name = 'product/shadcn_tax_form.html'
+    template_name = 'product/create_view_tax_form.html'
 
     def get_success_url(self):
         return reverse_lazy('inventory:product_tax', kwargs={'pk': self.object.pk})

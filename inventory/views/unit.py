@@ -11,7 +11,7 @@ class UnitListView(ListView):
         View para listar unidades de medida.
     """
     model = Unit
-    template_name = 'unit/shadcn_list.html'
+    template_name = 'unit/list_view.html'
     partial_template_name = 'unit/partials/unit_table.html'
     paginate_by = 20
     
@@ -49,7 +49,7 @@ class UnitCreateView(CreateView):
     """
     model = Unit
     form_class = UnitForm
-    template_name = 'unit/shadcn_form.html'
+    template_name = 'unit/create_view.html'
     success_url = reverse_lazy('inventory:unit_list')
 
     def form_valid(self, form):
@@ -63,7 +63,7 @@ class UnitUpdateView(UpdateView):
     """
     model = Unit
     form_class = UnitForm
-    template_name = 'unit/shadcn_form.html'
+    template_name = 'unit/create_view.html'
     success_url = reverse_lazy('inventory:unit_list')
 
     def get_queryset(self):

@@ -1,0 +1,32 @@
+{% extends "suppliers/layouts/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block page_title %}Dados Avançados{% endblock %}
+
+{% block form_content %}
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {{ form|crispy }}
+    </div>
+    
+    <div class="flex justify-end gap-3 mt-6 pt-6 border-t">
+        <a href="{% url 'partners:supplier_list' %}">
+            <c-button type="button" variant="outline">
+                Cancelar
+            </c-button>
+        </a>
+        <c-button type="submit" variant="default">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" />
+                <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                <path d="M14 4l0 4l-6 0l0 -4" />
+            </svg>
+            Salvar
+        </c-button>
+    </div>
+</form>
+{% endblock form_content %}

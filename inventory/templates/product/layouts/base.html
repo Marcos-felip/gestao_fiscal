@@ -2,79 +2,51 @@
 
 {% load static %}
 
-{% block title %} Produtos - Gestão Fiscal {% endblock title %}
+{% block title %}{% block page_title %}Produto{% endblock %} - Gestão Fiscal{% endblock title %}
 
 {% block titlebody %}
-<div class="container-xl mt-3">
-    <div class="row g-2 align-items-center">
-        <div class="col">
-            <h2 class="page-title">Produtos</h2>
-        </div>
-    </div>
+<div class="flex items-center px-6 py-4">
+    <a href="{% url 'inventory:product_list' %}" class="text-muted-foreground hover:text-foreground transition-colors mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M15 6l-6 6l6 6" />
+        </svg>
+    </a>
+    <h2 class="text-2xl font-semibold tracking-tight">
+        {% if object.pk %}Editar Produto: {{ object.name }}{% else %}Novo Produto{% endif %}
+    </h2>
 </div>
 {% endblock titlebody %}
 
 {% block content %}
-<div class="container-xl mt-3">
-    <div class="card">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs" style="padding: 0;" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a href="
-                        {% if not object.pk %}
-                            {% url 'inventory:product_create' %}
-                        {% else %}
-                            {% url 'inventory:product_update' pk=object.pk %}
-                        {% endif %}" 
-                        class="nav-link"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-package me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
-                            <path d="M12 12l8 -4.5" />
-                            <path d="M12 12l0 9" />
-                            <path d="M12 12l-8 -4.5" />
-                            <path d="M16 5.25l-8 4.5" />
-                        </svg>
-                        Dados do Produto
-                    </a>
-                </li>
+<div class="px-6 pb-6">
+    <c-card>
+        <c-card.header>
+            <!-- Tabs de navegação -->
+            <div class="flex border-b">
+                <a 
+                    href="{% if object.pk %}{% url 'inventory:product_update' pk=object.pk %}{% else %}#{% endif %}"
+                    class="px-4 py-2 text-sm font-medium border-b-2 transition-colors {% if active_tab == 'data' %}border-primary text-primary{% else %}border-transparent text-muted-foreground hover:text-foreground{% endif %}"
+                >
+                    Dados do Produto
+                </a>
                 {% if object.pk %}
-                    <li class="nav-item" role="presentation">
-                        <a href="{% url 'inventory:product_tax' pk=object.pk %}" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
-                                <path d="M9 7l6 0" />
-                                <path d="M9 11l6 0" />
-                                <path d="M9 15l6 0" />
-                            </svg>
-                            Dados Fiscais
-                        </a>
-                    </li>
+                <a 
+                    href="{% url 'inventory:product_tax' pk=object.pk %}"
+                    class="px-4 py-2 text-sm font-medium border-b-2 transition-colors {% if active_tab == 'tax' %}border-primary text-primary{% else %}border-transparent text-muted-foreground hover:text-foreground{% endif %}"
+                >
+                    Dados Fiscais
+                </a>
                 {% else %}
-                    <li class="nav-item" role="presentation">
-                        <a href="#" class="nav-link disabled">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" />
-                                <path d="M9 7l6 0" />
-                                <path d="M9 11l6 0" />
-                                <path d="M9 15l6 0" />
-                            </svg>
-                            Dados Fiscais
-                        </a>
-                    </li>
+                <span class="px-4 py-2 text-sm font-medium text-muted-foreground cursor-not-allowed">
+                    Dados Fiscais
+                </span>
                 {% endif %}
-            </ul>
-        </div>
-        <div class="card-body">
-            <div class="tab-content">
-                <div class="tab-pane active show">
-                    {% block card_content %}{% endblock card_content %}
-                </div>
             </div>
-        </div>
-    </div>
+        </c-card.header>
+        <c-card.content class="pt-6">
+            {% block form_content %}{% endblock form_content %}
+        </c-card.content>
+    </c-card>
 </div>
 {% endblock content %}

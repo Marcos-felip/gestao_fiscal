@@ -11,7 +11,7 @@ class CustomerListView(ListView):
         View para listar clientes da Empresa.
     """
     model = Customer
-    template_name = 'customers/shadcn_list.html'
+    template_name = 'customers/list_view.html'
     partial_template_name = 'customers/partials/customer_table.html'
     paginate_by = 20
 
@@ -61,7 +61,7 @@ class CustomerBasicCreateView(CreateView):
     """
     model = Customer
     form_class = CustomerBasicForm
-    template_name = 'customers/shadcn_basic_form.html'
+    template_name = 'customers/create_view_basic_form.html'
 
     def get_success_url(self):
         return reverse_lazy('partners:customer_advanced', kwargs={'pk': self.object.pk})
@@ -87,7 +87,7 @@ class CustomerUpdateView(UpdateView):
     """
     model = Customer
     form_class = CustomerBasicForm
-    template_name = 'customers/shadcn_basic_form.html'
+    template_name = 'customers/create_view_basic_form.html'
     success_url = reverse_lazy('partners:customer_list')
 
     def get_form_kwargs(self):
@@ -107,7 +107,7 @@ class CustomerAdvancedUpdateView(UpdateView):
     """
     model = Customer
     form_class = CustomerAdvancedForm
-    template_name = 'customers/shadcn_advanced_form.html'
+    template_name = 'customers/create_view_advanced_form.html'
 
     def get_success_url(self):
         return reverse_lazy('partners:customer_advanced', kwargs={'pk': self.object.pk})
@@ -129,7 +129,7 @@ class CustomerAddressUpdateView(UpdateView):
     """
     model = Customer
     form_class = CustomerAddressForm
-    template_name = 'customers/shadcn_address_form.html'
+    template_name = 'customers/create_view_address_form.html'
 
     def get_success_url(self):
         return reverse_lazy('partners:customer_address', kwargs={'pk': self.object.pk})

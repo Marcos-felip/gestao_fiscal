@@ -11,7 +11,7 @@ class CategoryListView(ListView):
         View para listar categorias de produtos.
     """
     model = Category
-    template_name = 'category/shadcn_list.html'
+    template_name = 'category/list_view.html'
     partial_template_name = 'category/partials/category_table.html'
     paginate_by = 20
     
@@ -48,7 +48,7 @@ class CategoryCreateView(CreateView):
     """
     model = Category
     form_class = CategoryForm
-    template_name = 'category/shadcn_form.html'
+    template_name = 'category/create_view.html'
     success_url = reverse_lazy('inventory:category_list')
 
     def form_valid(self, form):
@@ -62,7 +62,7 @@ class CategoryUpdateView(UpdateView):
     """
     model = Category
     form_class = CategoryForm
-    template_name = 'category/shadcn_form.html'
+    template_name = 'category/create_view.html'
     success_url = reverse_lazy('inventory:category_list')
 
     def get_queryset(self):
