@@ -89,31 +89,9 @@ class ProfileForm(forms.ModelForm):
         fields = [
             'first_name',
             'last_name',
-            'email'
+            'email',
         ]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Div(
-                Div(Field('first_name', css_class='form-control'), css_class='col-md'),
-                Div(Field('last_name', css_class='form-control'), css_class='col-md'),
-                Div(Field('email', css_class='form-control'), css_class='col-md'),
-                css_class='row g-3 mt-2'
-            )
-        )
-
 
 class CustomChangePasswordForm(ChangePasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.layout = Layout(
-            Div(
-                'oldpassword',
-                'password1',
-                'password2',
-            )
-        )
